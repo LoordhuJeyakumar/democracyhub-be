@@ -14,6 +14,12 @@ app.use(cors());
 
 // Using built-in middleware function in Express to parse incoming requests with JSON payloads
 app.use(express.json());
+app.get("/", (req, res) =>
+  res.status(200).send(`
+    <h1></h1>
+    <h1>Welcome to DemocracyHUB API</h1>
+    <b style="color:white; background-color:green; padding:5">Connected to MongoDB Application Health is Good</b>`)
+);
 
 // Define a middleware function to handle unknown endpoints
 const unknownEndpoint = (request, response) => {
@@ -22,7 +28,7 @@ const unknownEndpoint = (request, response) => {
 };
 
 // Use the application routes defined in appRouter
-app.use(appRouter);
+app.use("api/v1", appRouter);
 
 // Register the unknownEndpoint middleware as the last app-level middleware
 // This ensures it only gets called if no other middleware handles the request
