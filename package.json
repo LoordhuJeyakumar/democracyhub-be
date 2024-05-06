@@ -1,0 +1,32 @@
+{
+  "name": "democracyhub-be",
+  "version": "1.0.0",
+  "description": "Node.js, expressJS and MongoDB backend for DemocracyHub, a web application empowering Indian voters with election information, manifesto comparison tools, and discussion forums. This technology stack facilitates informed decision-making and strengthens Indian democracy.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon index.js",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LoordhuJeyakumar/democracyhub-be.git"
+  },
+  "author": "Loordhu Jeyakumar A",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LoordhuJeyakumar/democracyhub-be/issues"
+  },
+  "homepage": "https://github.com/LoordhuJeyakumar/democracyhub-be#readme",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.3.3",
+    "nodemailer": "^6.9.13"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
+  }
+}
