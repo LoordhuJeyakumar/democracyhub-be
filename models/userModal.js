@@ -1,5 +1,6 @@
 // Import Mongoose for interacting with MongoDB
 const mongoose = require("mongoose");
+const sendVerificationEmail = require("../utils/sendVerificationEmail");
 
 // Function to validate email format
 const validateEmail = (e) => {
@@ -13,7 +14,7 @@ const validateEmail = (e) => {
 const userSchema = new mongoose.Schema(
   {
     name: { type: String, required: [true, "Name is requierd"] },
-    name: {
+    email: {
       type: String,
       required: [true, "Email is requierd"],
       validate: validateEmail,
@@ -28,6 +29,7 @@ const userSchema = new mongoose.Schema(
     dob: { type: Date, default: null },
     passwordHash: { type: String, required: [true, "Password is required"] },
     varification: { type: Boolean, default: false },
+    verificationToken: { type: String, default: "" },
   },
   { timestamps: true } // Enable timestamps (createdAt, updatedAt) for the schema
 );
@@ -35,4 +37,4 @@ const userSchema = new mongoose.Schema(
 // Create the User model using the userSchema
 const UserModal = mongoose.model("User", userSchema, "users");
 // Exporting the User model
-module.exports = UserModal;
+module.exports = { UserModal, userSchema };
