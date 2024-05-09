@@ -1,12 +1,20 @@
 const nodemailer = require("nodemailer"); // Import nodemailer for sending emails
 const verificaionEmailMsg = require("./verificaionEmailMsg"); // Import function to generate verification email message content
 const envProcess = require("./config"); // Import environment variables configuration
+const passwordResetEmailMsg = require("./passwordResetEmailMsg");
 
 // Async function to send a verification email to the user
-async function sendVerificationEmail(user) {
+async function sendVerificationEmail(user, emailTypeStr) {
   try {
+    let emailType = {
+      isActivationEmail: emailTypeStr === "activationEmail",
+      isPasswordResetEmail: emailTypeStr === "passwordResetEmail",
+    };
     // Construct the verification email URL using environment variables and user data
-    let URL = `${envProcess.FRONTEND_BASEURI}users/${user._id}/${user.verificationToken}`;
+    let activationURL = `${envProcess.FRONTEND_BASEURI}users/${user._id}/${user.verificationToken}`;
+    let resetURL = `${envProcess.FRONTEND_BASEURI}resetPassword/${user._id}/${user.verificationToken}`;
+
+    let URL = emailType.isActivationEmail ? activationURL : resetURL;
 
     // Create a Nodemailer transport object with configuration from environment variables
     const transporter = nodemailer.createTransport({
@@ -27,7 +35,9 @@ async function sendVerificationEmail(user) {
       from: envProcess.EMAIL_USER,
       to: user.email,
       subject: "Verify Your Email & Unlock DemocracyHUB!",
-      html: verificaionEmailMsg(URL, user.name), // Generate HTML content using imported function
+      html: emailType.isActivationEmail
+        ? verificaionEmailMsg(URL, user.name)
+        : passwordResetEmailMsg(URL, user.name), // Generate HTML content using imported function
     };
 
     // Send the email using the transporter and handle success or failure

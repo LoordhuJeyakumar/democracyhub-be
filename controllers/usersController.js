@@ -2,7 +2,7 @@ const bcrypt = require("bcrypt"); // Import the bcrypt library for password hash
 const jwt = require("jsonwebtoken"); // Import the jsonwebtoken library for creating and verifying tokens
 const envProcess = require("../utils/config"); // Import environment configuration
 const sendVerificationEmail = require("../utils/sendVerificationEmail"); // Import the function for sending verification emails
-const { UserModal } = require("../models/userModal"); // Import the UserModal
+const UserModal = require("../models/userModal"); // Import the UserModal
 
 // Function to validate email format
 const validateEmail = (e) => {
@@ -13,10 +13,10 @@ const validateEmail = (e) => {
 };
 
 // Async function to send a verification email to the user
-async function sendEmail(doc) {
+async function sendEmail(doc, emailType) {
   try {
     // Send verification email
-    const verificationEmail = await sendVerificationEmail(doc);
+    const verificationEmail = await sendVerificationEmail(doc, emailType);
     console.log("Verification email sent successfully");
     return verificationEmail;
   } catch (error) {
@@ -103,7 +103,7 @@ const usersController = {
       /* 
       Note that the sendEmail function is called after the user document has been saved, and the response is sent before the email is sent. This ensures that the response is returned immediately, while the email sending process runs in the background.
       */
-      let emailInfo = await sendEmail(savedUser);
+      let emailInfo = await sendEmail(savedUser, "activationEmail");
       if (!emailInfo) {
         console.error("Error sending verification email");
       }
@@ -115,34 +115,49 @@ const usersController = {
     }
   },
 
+  // Asynchronous function for user login
   login: async (request, response) => {
     try {
+      // Get password and email from request body
       const password = request.body?.password;
       const email = request.body.email?.toLowerCase();
+
+      // Check for required fields (password and email)
       if (!password || !email) {
+        // Respond with Bad Request (400) if either is missing
         return response
           .status(400) //If any one of them undefined return Bad Request
           .json({ message: "Password and Email are requierd" });
       }
 
+      // Searching for a user with the provided email in the database
       let user = await UserModal.findOne({ email: email });
+
+      // Check if the user exists
       if (!user) {
+        // If no user is found, return a 401 Unauthorized status code and an error message
         return response
           .status(401)
           .json({ message: "user does not exist, Please register!" });
       }
 
+      // Checking if the user's email is verified
       if (!user.varification) {
+        // If not, return a 403 Forbidden status code and an error message
         return response.status(403).json({
           message: "Your account is InActive, Please verify your email",
         });
       }
 
+      // Compare the entered password with the hashed password using bcrypt
       const isAuthenticated = await bcrypt.compare(password, user.passwordHash);
 
+      // If the password is incorrect, return a 401 Unauthorized status code and an error message
       if (!isAuthenticated) {
         return response.status(401).json({ message: "invalid password" });
       }
+
+      // Create a JWT access token containing user information
       const accessToken = jwt.sign(
         {
           name: user.name,
@@ -150,8 +165,10 @@ const usersController = {
           id: user._id,
         },
         envProcess.JWT_SECRET,
-        { expiresIn: "8h" }
+        { expiresIn: "8h" } // Access token expires in 8 hours
       );
+
+      // If everything is correct, return a 200 OK status code and the user details along with the access token
       return response.status(200).json({
         message: "Login succesfull",
         id: user._id,
@@ -160,6 +177,7 @@ const usersController = {
         accessToken,
       });
     } catch (error) {
+      // If an error occurs, log the error and return a 500 Internal Server Error status code and an error message
       console.error(error);
       return response
         .status(500)
@@ -167,28 +185,189 @@ const usersController = {
     }
   },
 
+  // Asynchronous function to retrieve a user's details
   retrieveUser: async (request, response) => {
     try {
+      // get the userId from the request parameters
       const { userId } = request.params;
+
+      // Checking if userId is provided in the request
       if (!userId) {
+        // Respond with Bad Request (400) if 'userId' is missing
         return response.status(400).json({ message: "UserId missing" });
       }
 
+      // Find the user with the provided userId in the database
+      // Excluding the fields verificationToken, passwordHash, and _v from the result
       let user = await UserModal.findById(userId, {
         verificationToken: 0,
         passwordHash: 0,
         _v: 0,
       });
 
+      // Check if the user with the provided ID exists
       if (!user) {
+        // Respond with Unauthorized (401) if user not found
         return response
           .status(401)
           .json({ message: "user does not exist, Please check userId!" });
       }
+
+      // If the user is found, return a 200 OK status code and the user's details
       return response
         .status(200)
         .send({ message: "User details fetched", user });
     } catch (error) {
+      // If an error occurs, log the error and return a 500 Internal Server Error status code and an error message
+
+      console.error(error);
+      return response
+        .status(500)
+        .json({ error: "Internal Server Error", error: error.message });
+    }
+  },
+  verifyActivationToken: async (request, response) => {
+    try {
+      const { userId, verifyToken } = request.params;
+      if (!userId || !verifyToken) {
+        return response
+          .status(400)
+          .json({ message: "verification token and userId requierd" });
+      }
+
+      const userByToken = await UserModal.findOne({
+        verificationToken: verifyToken,
+      });
+
+      if (!userByToken) {
+        return response
+          .status(401)
+          .send({ message: "Verification Token is not valid" });
+      }
+      const decode = jwt.verify(verifyToken, envProcess.JWT_SECRET);
+      const user = await UserModal.findOne({ email: decode.email });
+
+      if (!user) {
+        return response
+          .status(401)
+          .json({ message: "Verification Token is not valid" });
+      }
+
+      if (user.verificationToken == verifyToken && user._id == userId) {
+        user.varification = true;
+        user.verificationToken = "";
+
+        let updatedUser = await user.save();
+        if (updatedUser) {
+          return response
+            .status(200)
+            .send({ message: "verificationToken is valid" });
+        } else {
+          console.log("test");
+          return response
+            .status(401)
+            .send({ message: "Verification Token is not valid" });
+        }
+      }
+
+      return response
+        .status(401)
+        .send({ message: "Verification Token is not valid" });
+    } catch (error) {
+      // If an error occurs, log the error and return a 500 Internal Server Error status code and an error message
+
+      console.error(error);
+      return response
+        .status(500)
+        .json({ error: "Internal Server Error", error: error.message });
+    }
+  },
+  reSendVerificationLink: async (request, response) => {
+    try {
+      const email = request.body.email.toLowerCase();
+      if (!email) {
+        return response.status(400).json({ message: "Missing Email" });
+      }
+
+      let userBYEmail = await UserModal.findOne({ email: email });
+      if (!userBYEmail) {
+        return response
+          .status(401)
+          .json({ message: "user does not exist, Please register!" });
+      }
+
+      const verificationToken = jwt.sign(
+        {
+          name: userBYEmail.name,
+          email,
+        },
+        envProcess.JWT_SECRET,
+        { expiresIn: "24h" }
+      );
+
+      userBYEmail.verificationToken = verificationToken;
+      userBYEmail.varification = false;
+
+      let updatedUser = await userBYEmail.save();
+
+      if (updatedUser) {
+        let emailInfo = await sendEmail(userBYEmail);
+        if (!emailInfo) {
+          console.error("Error sending verification email");
+        }
+
+        return response.status(200).json({
+          message:
+            "Verification link succesfully sent, please check your email!",
+        });
+      }
+    } catch (error) {
+      // If an error occurs, log the error and return a 500 Internal Server Error status code and an error message
+
+      console.error(error);
+      return response
+        .status(500)
+        .json({ error: "Internal Server Error", error: error.message });
+    }
+  },
+  resetPassword: async (request, response) => {
+    try {
+      const { password, confirmPassword } = request.body;
+      const { userId } = request.params;
+
+      if (!password || !confirmPassword || !userId) {
+        return response.status(400).json({
+          message: "Missing password and confirm password and userId fields",
+        });
+      }
+
+      if (password !== confirmPassword) {
+        return response
+          .status(400)
+          .json({ message: "Password and confirm password do not match" });
+      }
+
+      let userById = UserModal.findById(userId);
+      if (!userById) {
+        // Respond with Unauthorized (401) if user not found
+        return response
+          .status(401)
+          .json({ message: "user does not exist, Please check userId!" });
+      }
+
+      let newPasswordHash = bcrypt.hash(password, 10);
+      userById.passwordHash = newPasswordHash;
+      userById.verificationToken = "";
+      userById.varification = true;
+      let updatedUser = await userById.save();
+      if (updatedUser) {
+        return response.status(200).json({
+          message: "Password succesfully changed!",
+        });
+      }
+    } catch (error) {
+      // If an error occurs, log the error and return a 500 Internal Server Error status code and an error message
+
       console.error(error);
       return response
         .status(500)
