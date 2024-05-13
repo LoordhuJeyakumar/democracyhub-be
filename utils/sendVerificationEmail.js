@@ -12,7 +12,7 @@ async function sendVerificationEmail(user, emailTypeStr) {
     };
     // Construct the verification email URL using environment variables and user data
     let activationURL = `${envProcess.FRONTEND_BASEURI}users/${user._id}/${user.verificationToken}`;
-    let resetURL = `${envProcess.FRONTEND_BASEURI}resetPassword/${user._id}/${user.verificationToken}`;
+    let resetURL = `${envProcess.FRONTEND_BASEURI}resetPassword/${user._id}/${user.resetToken}`;
 
     let URL = emailType.isActivationEmail ? activationURL : resetURL;
 

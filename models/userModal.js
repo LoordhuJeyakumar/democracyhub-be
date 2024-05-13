@@ -30,6 +30,7 @@ const userSchema = new mongoose.Schema(
     passwordHash: { type: String, required: [true, "Password is required"] },
     varification: { type: Boolean, default: false },
     verificationToken: { type: String, default: "" },
+    resetToken: { type: String, default: "" },
   },
   { timestamps: true } // Enable timestamps (createdAt, updatedAt) for the schema
 );

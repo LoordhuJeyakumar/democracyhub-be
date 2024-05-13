@@ -263,7 +263,61 @@ const usersController = {
             .status(200)
             .send({ message: "verificationToken is valid" });
         } else {
-          console.log("test");
+          return response
+            .status(401)
+            .send({ message: "Verification Token is not valid" });
+        }
+      }
+
+      return response
+        .status(401)
+        .send({ message: "Verification Token is not valid" });
+    } catch (error) {
+      // If an error occurs, log the error and return a 500 Internal Server Error status code and an error message
+
+      console.error(error);
+      return response
+        .status(500)
+        .json({ error: "Internal Server Error", error: error.message });
+    }
+  },
+  verifyResetToken: async (request, response) => {
+    try {
+      const { userId, resetToken } = request.params;
+      if (!userId || !resetToken) {
+        return response
+          .status(400)
+          .json({ message: "verification token and userId requierd" });
+      }
+
+      const userByToken = await UserModal.findOne({
+        resetToken: resetToken,
+      });
+
+      if (!userByToken) {
+        return response
+          .status(401)
+          .send({ message: "Verification Token is not valid" });
+      }
+      const decode = jwt.verify(resetToken, envProcess.JWT_SECRET);
+      const user = await UserModal.findOne({ email: decode.email });
+
+      if (!user) {
+        return response
+          .status(401)
+          .json({ message: "Verification Token is not valid" });
+      }
+
+      if (user.resetToken == resetToken && user._id == userId) {
+        user.varification = true;
+        user.resetToken = "";
+
+        let updatedUser = await user.save();
+        if (updatedUser) {
+          return response
+            .status(200)
+            .send({ message: "verificationToken is valid" });
+        } else {
           return response
             .status(401)
             .send({ message: "Verification Token is not valid" });
@@ -311,7 +365,55 @@ const usersController = {
       let updatedUser = await userBYEmail.save();
 
       if (updatedUser) {
-        let emailInfo = await sendEmail(userBYEmail);
+        let emailInfo = await sendEmail(userBYEmail, "activationEmail");
+        if (!emailInfo) {
+          console.error("Error sending verification email");
+        }
+
+        return response.status(200).json({
+          message:
+            "Verification link succesfully sent, please check your email!",
+        });
+      }
+    } catch (error) {
+      // If an error occurs, log the error and return a 500 Internal Server Error status code and an error message
+
+      console.error(error);
+      return response
+        .status(500)
+        .json({ error: "Internal Server Error", error: error.message });
+    }
+  },
+  resetPasswordLink:async(request,response)=>{
+    try {
+      const email = request.body.email.toLowerCase();
+      if (!email) {
+        return response.status(400).json({ message: "Missing Email" });
+      }
+
+      let userBYEmail = await UserModal.findOne({ email: email });
+      if (!userBYEmail) {
+        return response
+          .status(401)
+          .json({ message: "user does not exist, Please register!" });
+      }
+
+      const resetToken = jwt.sign(
+        {
+          name: userBYEmail.name,
+          email,
+        },
+        envProcess.JWT_SECRET,
+        { expiresIn: "24h" }
+      );
+
+      userBYEmail.resetToken = resetToken;
+      userBYEmail.varification = false;
+
+      let updatedUser = await userBYEmail.save();
+
+      if (updatedUser) {
+        let emailInfo = await sendEmail(userBYEmail,"passwordResetEmail");
         if (!emailInfo) {
           console.error("Error sending verification email");
         }

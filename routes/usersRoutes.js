@@ -13,10 +13,15 @@ usersRouter.get(
   "/verify/:userId/:verifyToken",
   usersController.verifyActivationToken
 );
+usersRouter.get(
+  "/resetPassword/:userId/:resetToken",
+  usersController.verifyResetToken
+);
 usersRouter.post(
   "/sendVerificationLink",
   usersController.reSendVerificationLink
 );
+usersRouter.post("/resetPasswordLink", usersController.resetPasswordLink);
 usersRouter.post("/resetPassword/:userId", usersController.resetPassword);
 
 module.exports = usersRouter;
