@@ -68,6 +68,69 @@ const electionController = {
   },
   getElectionDetails: async (request, response) => {
     try {
+      let { electionId } = request.params;
+
+      if (!electionId) {
+        return response.status(400).json({ message: "ElectionId missing" });
+      }
+
+      let electionDetails = await ElectionModal.findById(electionId);
+
+      if (!electionDetails) {
+        return response.status(401).json({
+          message: "Election details does not exist, Please check electionId!",
+        });
+      }
+      
+
+      return response.status(200).json({message:"Election details fetched", electionDetails})
+
+    } catch (error) {
+      return response
+        .status(500)
+        .json({ error: "Internal Server Error", error: error.message });
+    }
+  },
+  getAllElectionDetails: async (request, response) => {
+    try {
+      
+
+      let allElectionDetails = await ElectionModal.find()
+
+      if (!allElectionDetails) {
+        return response.status(401).json({
+          message: "There is no election details in database!",
+        });
+      }
+      
+
+      return response.status(200).json({message:"All Election details fetched", allElectionDetails})
+
+    } catch (error) {
+      return response
+        .status(500)
+        .json({ error: "Internal Server Error", error: error.message });
+    }
+  },
+  getElectionByType: async (request, response) => {
+    try {
+      let { electionType } = request.params;
+
+      if (!electionType) {
+        return response.status(400).json({ message: "Election Type missing" });
+      }
+
+      let electionDetails = await ElectionModal.findOne({electionType:electionType});
+
+      if (!electionDetails) {
+        return response.status(401).json({
+          message: "Election details does not exist, Please check electionType!",
+        });
+      }
+      
+
+      return response.status(200).json({message:"Election details fetched", electionDetails})
+
     } catch (error) {
       return response
         .status(500)
