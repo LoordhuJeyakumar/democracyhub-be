@@ -120,7 +120,9 @@ const electionController = {
         return response.status(400).json({ message: "Election Type missing" });
       }
 
-      let electionDetails = await ElectionModal.findOne({electionType:electionType});
+      let electionDetails = await ElectionModal.find({
+        electionType: electionType,
+      });
 
       if (!electionDetails) {
         return response.status(401).json({

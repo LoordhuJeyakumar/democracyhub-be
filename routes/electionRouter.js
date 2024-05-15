@@ -9,4 +9,5 @@ electionRouter.put(
   electionController.updateElectionDetails
 );
 electionRouter.get("/:electionId", electionController.getElectionDetails);
+electionRouter.get("/type/:electionType", electionController.getElectionByType);
 module.exports = electionRouter;
