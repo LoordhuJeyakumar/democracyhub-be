@@ -32,16 +32,8 @@ const partySchema = new mongoose.Schema(
     },
     manifestos: [
       {
-        election: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "Election",
-          required: true,
-        },
-        manifestoURL: {
-          type: String,
-          trim: true,
-          required: true,
-        },
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Manifesto",
       },
     ],
     nationalPresidents: [
