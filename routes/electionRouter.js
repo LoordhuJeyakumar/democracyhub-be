@@ -10,4 +10,8 @@ electionRouter.put(
 );
 electionRouter.get("/:electionId", electionController.getElectionDetails);
 electionRouter.get("/type/:electionType", electionController.getElectionByType);
+electionRouter.delete(
+  "/delete/:electionId",
+  electionController.deleteElectionById
+);
 module.exports = electionRouter;

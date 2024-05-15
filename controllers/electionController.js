@@ -97,7 +97,7 @@ const electionController = {
 
       let allElectionDetails = await ElectionModal.find()
 
-      if (!allElectionDetails) {
+      if (allElectionDetails?.length == 0) {
         return response.status(401).json({
           message: "There is no election details in database!",
         });
@@ -132,6 +132,33 @@ const electionController = {
       
 
       return response.status(200).json({message:"Election details fetched", electionDetails})
+
+    } catch (error) {
+      return response
+        .status(500)
+        .json({ error: "Internal Server Error", error: error.message });
+    }
+  },
+  deleteElectionById: async (request, response) => {
+    try {
+      let { electionId } = request.params;
+
+      if (!electionId) {
+        return response.status(400).json({ message: "ElectionId missing" });
+      }
+
+      let electionDetails = await ElectionModal.findById(electionId);
+
+      if (!electionDetails) {
+        return response.status(401).json({
+          message: "Election details does not exist, Please check electionId!",
+        });
+      }
+      
+
+      let deletedElection = await electionDetails.deleteOne()
+
+      return response.status(200).json({message:"Election details succesfully deleted", deletedElection})
 
     } catch (error) {
       return response
