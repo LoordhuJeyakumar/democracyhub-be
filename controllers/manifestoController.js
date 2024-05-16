@@ -111,6 +111,17 @@ const manifestoController = {
   },
   getAllManifestosDetails: async (request, response) => {
     try {
+        let allManifestos = await ManifestoModal.find();
+
+        if (allManifestos?.length == 0) {
+          return response.status(401).json({
+            message: "There is no manifesto details in database!",
+          });
+        }
+
+        return response
+          .status(200)
+          .json({ message: "All Manifestos details fetched", allManifestos });
     } catch (error) {
       return response
         .status(500)

@@ -12,5 +12,6 @@ manifestoRouter.delete(
   manifestoController.deleteManifesto
 );
 manifestoRouter.get("/:manifestoId", manifestoController.getManifestoById);
+manifestoRouter.get("/", manifestoController.getAllManifestosDetails);
 
 module.exports = manifestoRouter;
