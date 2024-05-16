@@ -7,5 +7,10 @@ manifestoRouter.put(
   "/update/:manifestoId",
   manifestoController.updateManifesto
 );
+manifestoRouter.delete(
+  "/delete/:manifestoId",
+  manifestoController.deleteManifesto
+);
+manifestoRouter.get("/:manifestoId", manifestoController.getManifestoById);
 
 module.exports = manifestoRouter;

@@ -60,5 +60,62 @@ const manifestoController = {
         .json({ error: "Internal Server Error", error: error.message });
     }
   },
+  deleteManifesto: async (request, response) => {
+    try {
+      const { manifestoId } = request.params;
+
+      let existManifesto = await ManifestoModal.findById(manifestoId);
+
+      if (!existManifesto) {
+        return response.status(401).json({
+          message: `Manifesto does not exists`,
+        });
+      }
+      let deleteManifesto = await ManifestoModal.findByIdAndDelete(manifestoId);
+
+      if (deleteManifesto) {
+        return response.status(200).json({
+          message: "Manifesto details deleted successfully ",
+          deleteManifesto,
+        });
+      }
+    } catch (error) {
+      return response
+        .status(500)
+        .json({ error: "Internal Server Error", error: error.message });
+    }
+  },
+  getManifestoById: async (request, response) => {
+    try {
+      const { manifestoId } = request.params;
+
+      if (!manifestoId) {
+        return response.status(400).json({ message: "manifestoId missing" });
+      }
+
+      let existManifesto = await ManifestoModal.findById(manifestoId);
+
+      if (!existManifesto) {
+        return response.status(401).json({
+          message: `Manifesto does not exists`,
+        });
+      }
+      return response
+        .status(200)
+        .json({ message: "Manifesto details fetched", existManifesto });
+    } catch (error) {
+      return response
+        .status(500)
+        .json({ error: "Internal Server Error", error: error.message });
+    }
+  },
+  getAllManifestosDetails: async (request, response) => {
+    try {
+    } catch (error) {
+      return response
+        .status(500)
+        .json({ error: "Internal Server Error", error: error.message });
+    }
+  },
 };
 module.exports = manifestoController;
