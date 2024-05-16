@@ -31,6 +31,10 @@ const localIssueSchema = new mongoose.Schema(
       required: [true, "Local issue description is required"],
       trim: true,
     },
+    photo: {
+      type: String,
+      default: "",
+    },
     location: {
       type: String,
       required: [true, "Location is required for the local issue"],
@@ -84,6 +88,7 @@ const localIssueSchema = new mongoose.Schema(
     },
     resolvedAt: {
       type: Date,
+      default: null,
     },
     comments: [
       {
