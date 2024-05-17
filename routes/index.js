@@ -1,3 +1,4 @@
+const constituencyRouter = require("./constituencyRouter");
 const electionRouter = require("./electionRouter");
 const localIssueRouter = require("./localIssueRouter");
 const manifestoRouter = require("./manifestoRouter");
@@ -11,6 +12,6 @@ appRouter.use("/elections", electionRouter);
 appRouter.use("/parties", partiesRouter);
 appRouter.use("/manifestos", manifestoRouter);
 appRouter.use("/localIssues", localIssueRouter);
-
+appRouter.use("/constituencies", constituencyRouter);
 
 module.exports = appRouter;
