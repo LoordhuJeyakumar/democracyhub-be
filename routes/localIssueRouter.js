@@ -12,4 +12,6 @@ localIssueRouter.delete(
   localIssueController.deleteIssueById
 );
 
+localIssueRouter.get("/:localIssueId", localIssueController.getIssueById);
+
 module.exports = localIssueRouter;
