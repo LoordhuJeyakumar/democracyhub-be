@@ -6,4 +6,8 @@ constituencyRouter.put(
   "/update/:constituencyId",
   constituencyController.updateConstituencyById
 );
+constituencyRouter.delete(
+  "/delete/:constituencyId",
+  constituencyController.deleteConstituencyById
+);
 module.exports = constituencyRouter;
