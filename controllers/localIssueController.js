@@ -121,5 +121,26 @@ const localIssueController = {
         .json({ error: "Internal Server Error", error: error.message });
     }
   },
+
+  getAllIssues: async (request, response) => {
+    try {
+      const allIssues = await LocalIssueModal.find().sort({ createdAt: -1 });
+
+      if (allIssues?.length == 0) {
+        return response.status(401).json({
+          message: "There is no Issue details in database!",
+        });
+      }
+
+      return response
+        .status(200)
+        .json({ message: "All Issue details fetched", allIssues });
+    } catch (error) {
+      console.error(error);
+      return response
+        .status(500)
+        .json({ error: "Internal Server Error", error: error.message });
+    }
+  },
 };
 module.exports = localIssueController;
