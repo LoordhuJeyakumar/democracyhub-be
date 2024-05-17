@@ -38,6 +38,39 @@ const constituencyController = {
         .json({ error: "Internal Server Error", error: error.message });
     }
   },
+  updateConstituencyById: async (request, response) => {
+    try {
+      const { constituencyId } = request.params;
+      if (!constituencyId) {
+        return response.status(400).json({ message: "constituencyId missing" });
+      }
+
+      const existConstituency = await ConstituencyModal.findById(
+        constituencyId
+      );
+
+      if (!existConstituency) {
+        return response.status(401).json({
+          message:
+            "Constituency details does not exist, Please check constituencyId!",
+        });
+      }
+
+      let updateConstituency = await existConstituency.updateOne(request.body);
+
+      if (updateConstituency) {
+        return response.status(200).json({
+          message: "Constituency details updated successfully ",
+          updateConstituency,
+        });
+      }
+    } catch (error) {
+      console.error(error);
+      return response
+        .status(500)
+        .json({ error: "Internal Server Error", error: error.message });
+    }
+  },
 };
 
 module.exports = constituencyController;
