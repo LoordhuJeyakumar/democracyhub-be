@@ -142,5 +142,37 @@ const localIssueController = {
         .json({ error: "Internal Server Error", error: error.message });
     }
   },
+  upVoteIssue: async (request, response) => {
+    try {
+      const { localIssueId } = request.params;
+
+      if (!localIssueId) {
+        return response.status(400).json({ message: "localIssueId missing" });
+      }
+
+      const existIssue = await LocalIssueModal.findById(localIssueId);
+
+      if (!existIssue) {
+        return response.status(401).json({
+          message: "Issue details does not exist, Please check localIssueId!",
+        });
+      }
+
+      existIssue.upvotes += 1;
+
+      let updateIssue = await existIssue.save();
+      if (updateIssue) {
+        return response.status(200).json({
+          message: "Issue Upvoted successfully ",
+          updateIssue,
+        });
+      }
+    } catch (error) {
+      console.error(error);
+      return response
+        .status(500)
+        .json({ error: "Internal Server Error", error: error.message });
+    }
+  },
 };
 module.exports = localIssueController;

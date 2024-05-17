@@ -14,5 +14,7 @@ localIssueRouter.delete(
 
 localIssueRouter.get("/:localIssueId", localIssueController.getIssueById);
 localIssueRouter.get("/", localIssueController.getAllIssues);
+localIssueRouter.put("/upVote/:localIssueId", localIssueController.upVoteIssue);
+localIssueRouter.put("/downVote/:localIssueId", localIssueController.upVoteIssue);
 
 module.exports = localIssueRouter;
