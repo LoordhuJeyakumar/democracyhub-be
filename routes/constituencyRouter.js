@@ -10,4 +10,9 @@ constituencyRouter.delete(
   "/delete/:constituencyId",
   constituencyController.deleteConstituencyById
 );
+constituencyRouter.get("/", constituencyController.getAllConstituencies);
+constituencyRouter.get(
+  "/:constituencyId",
+  constituencyController.getConstituencyById
+);
 module.exports = constituencyRouter;
