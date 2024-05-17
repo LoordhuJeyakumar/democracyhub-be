@@ -32,32 +32,63 @@ const localIssueController = {
         .json({ error: "Internal Server Error", error: error.message });
     }
   },
-  updateLocalIssue: async (request,response) => {
+  updateLocalIssue: async (request, response) => {
     try {
+      let { localIssueId } = request.params;
 
-        let {localIssueId} = request.params
+      if (!localIssueId) {
+        return response.status(400).json({ message: "localIssueId missing" });
+      }
 
-        if (!localIssueId) {
-            return response.status(400).json({ message: "localIssueId missing" });
-          }
+      let existIssue = await LocalIssueModal.findById(localIssueId);
 
-        let existIssue  = await LocalIssueModal.findById(localIssueId)
+      if (!existIssue) {
+        return response.status(401).json({
+          message: "Issue details does not exist, Please check localIssueId!",
+        });
+      }
 
-        if(!existIssue){
-            return response.status(401).json({
-                message: "Issue details does not exist, Please check localIssueId!",
-              });
-        }
+      let updateIssue = await LocalIssueModal.findByIdAndUpdate(
+        localIssueId,
+        request.body,
+        { new: true }
+      );
 
-        let updateIssue = await LocalIssueModal.findByIdAndUpdate(localIssueId,request.body, {new:true})
+      if (updateIssue) {
+        return response.status(200).json({
+          message: "Issue details updated successfully ",
+          updateIssue,
+        });
+      }
+    } catch (error) {
+      console.error(error);
+      return response
+        .status(500)
+        .json({ error: "Internal Server Error", error: error.message });
+    }
+  },
+  deleteIssueById: async (request, response) => {
+    try {
+      let { localIssueId } = request.params;
 
-        if(updateIssue){
-            return response.status(200).json({
-                message: "Issue details updated successfully ",
-                updateIssue,
-              });
-        }
+      if (!localIssueId) {
+        return response.status(400).json({ message: "localIssueId missing" });
+      }
 
+      let existIssue = await LocalIssueModal.findById(localIssueId);
+
+      if (!existIssue) {
+        return response.status(401).json({
+          message: "Issue details does not exist, Please check localIssueId!",
+        });
+      }
+
+      let deleteIssue = await existIssue.deleteOne();
+      if (deleteIssue) {
+        return response
+          .status(200)
+          .json({ message: "Issue details succesfully deleted", deleteIssue });
+      }
     } catch (error) {
       console.error(error);
       return response

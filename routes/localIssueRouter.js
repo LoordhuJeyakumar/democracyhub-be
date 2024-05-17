@@ -7,5 +7,9 @@ localIssueRouter.put(
   "/update/:localIssueId",
   localIssueController.updateLocalIssue
 );
+localIssueRouter.delete(
+  "/delete/:localIssueId",
+  localIssueController.deleteIssueById
+);
 
 module.exports = localIssueRouter;
