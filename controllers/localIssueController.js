@@ -150,7 +150,13 @@ const localIssueController = {
         return response.status(400).json({ message: "localIssueId missing" });
       }
 
-      const existIssue = await LocalIssueModal.findById(localIssueId);
+      const existIssue = await LocalIssueModal.findById(localIssueId, {
+        _id: 1,
+        upvotes: 1,
+        downvotes: 1,
+        title: 1,
+        description: 1,
+      });
 
       if (!existIssue) {
         return response.status(401).json({
@@ -164,6 +170,44 @@ const localIssueController = {
       if (updateIssue) {
         return response.status(200).json({
           message: "Issue Upvoted successfully ",
+          updateIssue,
+        });
+      }
+    } catch (error) {
+      console.error(error);
+      return response
+        .status(500)
+        .json({ error: "Internal Server Error", error: error.message });
+    }
+  },
+  downVoteIssue: async (request, response) => {
+    try {
+      const { localIssueId } = request.params;
+
+      if (!localIssueId) {
+        return response.status(400).json({ message: "localIssueId missing" });
+      }
+
+      const existIssue = await LocalIssueModal.findById(localIssueId, {
+        _id: 1,
+        upvotes: 1,
+        downvotes: 1,
+        title: 1,
+        description: 1,
+      });
+
+      if (!existIssue) {
+        return response.status(401).json({
+          message: "Issue details does not exist, Please check localIssueId!",
+        });
+      }
+
+      existIssue.downvotes += 1;
+
+      let updateIssue = await existIssue.save();
+      if (updateIssue) {
+        return response.status(200).json({
+          message: "Issue DownVote successfully ",
           updateIssue,
         });
       }
