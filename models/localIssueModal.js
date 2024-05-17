@@ -88,7 +88,7 @@ const localIssueSchema = new mongoose.Schema(
     },
     resolvedAt: {
       type: Date,
-      default: null,
+      default:null
     },
     comments: [
       {

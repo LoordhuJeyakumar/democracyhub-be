@@ -6,11 +6,13 @@ const manifestoSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Party",
       required: [true, "Party is required"],
+      index: true,
     },
     election: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Election",
       required: [true, "Election is required"],
+      index: true,
     },
     manifestoURL: {
       type: String,
@@ -27,17 +29,8 @@ const manifestoSchema = new mongoose.Schema(
     },
     keyPoints: [
       {
-        point: {
-          type: String,
-          /* required: [true, "Key point is required"], */
-          trim: true,
-        },
-        description: {
-          type: String,
-          /* required: [true, "Description is required"], */
-          trim: true,
-        },
-        default: [],
+        point: { type: String, trim: true, default: "" },
+        description: { type: String, trim: true, default: "" },
       },
     ],
     vision: {
@@ -47,17 +40,8 @@ const manifestoSchema = new mongoose.Schema(
     },
     promises: [
       {
-        issue: {
-          type: String,
-          /* required: [true, "Issue is required"], */
-          trim: true,
-        },
-        plan: {
-          type: String,
-          /*  required: [true, "Plan is required"], */
-          trim: true,
-        },
-        default: [],
+        issue: { type: String, trim: true, default: "" },
+        plan: { type: String, trim: true, default: "" },
       },
     ],
   },
