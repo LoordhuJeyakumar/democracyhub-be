@@ -32,5 +32,38 @@ const localIssueController = {
         .json({ error: "Internal Server Error", error: error.message });
     }
   },
+  updateLocalIssue: async (request,response) => {
+    try {
+
+        let {localIssueId} = request.params
+
+        if (!localIssueId) {
+            return response.status(400).json({ message: "localIssueId missing" });
+          }
+
+        let existIssue  = await LocalIssueModal.findById(localIssueId)
+
+        if(!existIssue){
+            return response.status(401).json({
+                message: "Issue details does not exist, Please check localIssueId!",
+              });
+        }
+
+        let updateIssue = await LocalIssueModal.findByIdAndUpdate(localIssueId,request.body, {new:true})
+
+        if(updateIssue){
+            return response.status(200).json({
+                message: "Issue details updated successfully ",
+                updateIssue,
+              });
+        }
+
+    } catch (error) {
+      console.error(error);
+      return response
+        .status(500)
+        .json({ error: "Internal Server Error", error: error.message });
+    }
+  },
 };
 module.exports = localIssueController;
