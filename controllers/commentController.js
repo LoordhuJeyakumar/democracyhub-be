@@ -93,6 +93,23 @@ const commentsController = {
       return common500Error(error, response);
     }
   },
+  getCommentById: async (request, response) => {
+    try {
+      const { commentId } = request.params;
+
+      if (!commentId) {
+        return response.status(400).json({ message: "commentId missing" });
+      }
+
+      let existComment = await findCommentById(commentId, response);
+      if (!existComment) return;
+      return response
+        .status(200)
+        .json({ message: "Comment details fetched", existComment });
+    } catch (error) {
+      return common500Error(error, response);
+    }
+  },
 };
 
 module.exports = commentsController;

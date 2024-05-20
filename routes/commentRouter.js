@@ -13,4 +13,14 @@ commentRouter.put(
   authMiddleware.verifyAccesToken,
   commentsController.createComment
 );
+commentRouter.delete(
+  "/delete/:commentId",
+  authMiddleware.verifyAccesToken,
+  commentsController.deleteCommentById
+);
+commentRouter.delete(
+  "/:commentId",
+  authMiddleware.verifyAccesToken,
+  commentsController.getCommentById
+);
 module.exports = commentRouter;
