@@ -1,28 +1,5 @@
 const CommentModal = require("../models/commentModal");
-
-const findCommentById = async (commentId, response) => {
-  try {
-    let comment = await CommentModal.findById(commentId);
-    if (!comment) {
-      response.status(404).json({ message: "Comment does not exist" });
-      return null;
-    }
-    return comment;
-  } catch (error) {
-    console.error(error);
-    response
-      .status(500)
-      .json({ error: "Internal Server Error", error: error.message });
-    return null;
-  }
-};
-
-const common500Error = (error, response) => {
-  console.error(error);
-  return response
-    .status(500)
-    .json({ error: "Internal Server Error", error: error.message });
-};
+const { common500Error, findCommentById } = require("../utils/helper");
 
 const commentsController = {
   createComment: async (request, response) => {
@@ -92,9 +69,28 @@ const commentsController = {
 
   deleteCommentById: async (request, response) => {
     try {
-        
+      const { commentId } = request.params;
+      const userId = request.userId;
+
+      // Use the findCommentById helper function
+      let existComment = await findCommentById(commentId, response);
+      if (!existComment) return;
+
+      // Check if the user is the author of the comment
+      if (existComment.createdBy.toString() !== userId) {
+        return response.status(403).json({ message: "Access denied" });
+      }
+
+      let deletedComment = await existComment.deleteOne();
+
+      if (deletedComment) {
+        return response.status(200).json({
+          message: "Comment details succesfully deleted",
+          deletedComment,
+        });
+      }
     } catch (error) {
-        
+      return common500Error(error, response);
     }
   },
 };
