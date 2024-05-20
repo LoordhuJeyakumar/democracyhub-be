@@ -38,4 +38,4 @@ const authMiddleware = {
   },
 };
 
-module.exports = authMiddleware;
+module.exports = { authMiddleware, getTokenFromRequest };

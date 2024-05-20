@@ -31,6 +31,7 @@ const userSchema = new mongoose.Schema(
     varification: { type: Boolean, default: false },
     verificationToken: { type: String, default: "" },
     resetToken: { type: String, default: "" },
+    isAdmin: { type: Boolean, default: false },
   },
   { timestamps: true } // Enable timestamps (createdAt, updatedAt) for the schema
 );

@@ -1,0 +1,390 @@
+{
+  "comparisons": [
+    {
+      "category": "Healthcare",
+      "party1HasStatement": false,
+      "party1Statements": [],
+      "party2HasStatement": true,
+      "party2Statements": [
+        "We have provided high quality healthcare services to the middle class families by expanding the AIIMS",
+        "these services for our middle class families to ensure accessible high quality healthcare services.",
+        "improved connectivity and access to healthcare, education, government services and markets.",
+        "Improving Mental Healthcare Services"
+      ]
+    },
+    {
+      "category": "Education",
+      "party1HasStatement": true,
+      "party1Statements": [
+        "powerhouse, and built world class institutions in research and higher education whose graduates are seen as at par",
+        "will be doubled, especially for higher education.",
+        "employment, public works contracts, skill development,",
+        "Excellence for Special Education to ensure that quality",
+        "Higher educational institutions will have",
+        "tric and higher education scholarships for disadvan-",
+        "and higher educational institutions will be accredited",
+        "24. We will ensure that all higher educational institu-",
+        "and state-approved higher educational institutions."
+      ],
+      "party2HasStatement": true,
+      "party2Statements": [
+        "Promoting Quality Higher Education",
+        "We will elevate the quality of education by expanding top educational institutions and upgrading",
+        "link them with higher education institutes to promote entrepreneurship among our students.",
+        "Vigyan Kendra into a one-stop centre for skill development.",
+        "facilitiesϊ training and skill developmentϊ and providing market access to Іishwakarma families.",
+        "facilities, training and skill development, and providing market access to Vishwakarma families.",
+        "We will ensure that no student of the OBC, SC and ST families are deprived of higher education due to",
+        "on sectors like manufacturing, services, rural industry, infrastructure, tourism, and skill development,",
+        "mandated by NEP and by incorporating industry-aligned curriculum and skill development in emerging",
+        "technologies in higher education.",
+        "certificates, among others for students from pre-primary to higher education.",
+        "In the last ten years, we have developed a robust skill development ecosystem."
+      ]
+    },
+    {
+      "category": "Rural Development and Agriculture",
+      "party1HasStatement": true,
+      "party1Statements": [
+        "Rural Employment Guarantee Act (MGNREGA) and the National Food Security Act ensured that India was able to",
+        "National Food Security Act, 2013."
+      ],
+      "party2HasStatement": false,
+      "party2Statements": []
+    },
+    {
+      "category": "Infrastructure and Transportation",
+      "party1HasStatement": false,
+      "party1Statements": [],
+      "party2HasStatement": true,
+      "party2Statements": [
+        "We will implement AI technologies for traffic management and",
+        "by-laws and urban planning processes using technology."
+      ]
+    },
+    {
+      "category": "Environment and Energy",
+      "party1HasStatement": true,
+      "party1Statements": [
+        "Water Management and Sanitation......................................................................................",
+        "Congress re-affirms its profound commitment to rapid, inclusive and sustainable development, and to protect its",
+        "forest conservation, biodiversity preservation, coastal zone regulation, wetlands protection and protection of tribal",
+        "WATER MANAGEMENT"
+      ],
+      "party2HasStatement": true,
+      "party2Statements": [
+        "water management.",
+        "National River Conservation Plan, Jal Marg Vikas Project and Arth Ganga, among others, to double the",
+        "infrastructure, urban environmental protection, urban water management, urban transport and more.",
+        "Sustainable Development of Hill States",
+        "sustainable development initiatives.",
+        "Conservation Plan.",
+        "Through this, the conservation and regeneration of basins of all major",
+        "Initiating National E-Waste Management Programme"
+      ]
+    },
+    {
+      "category": "Public Safety and Law Enforcement",
+      "party1HasStatement": true,
+      "party1Statements": [
+        "Environment, Climate Change and Disaster Management ................................................",
+        "to maintain law and order and to punish offenders",
+        "Environment, Climate Change and Disaster Management",
+        "10. We will not limit disaster management to humans"
+      ],
+      "party2HasStatement": false,
+      "party2Statements": []
+    },
+    {
+      "category": "Public Services and Utilities",
+      "party1HasStatement": true,
+      "party1Statements": [
+        "will be provided to all sanitation workers.",
+        "4. We will restore travel concessions in public transport",
+        "state-of-the-art Internet-enabled public libraries in",
+        "5. We will review the Telecommunications Act, 2023 and",
+        "10 years; that they are able to enjoy the fruits of education, healthcare, housing, drinking water, sanitation, electricity",
+        "multi-modal urban public transport.",
+        "panchayats or municipality self-sufficient in electricity",
+        "ports, airports and electricity.",
+        "Some issues like livelihoods, housing, water, electricity, habitat, pollution, climate change, transport and disaster",
+        "AND SANITATION",
+        "sanitation workers deceased while at work.",
+        "to all sanitation workers."
+      ],
+      "party2HasStatement": true,
+      "party2Statements": [
+        "electricity, etc, but they are also being empowered with new-age facilities like optic fibre connections, digital",
+        "Achieved 100% electrification by providing electricity connection to 2.8+ crore families under",
+        "Zero Electricity Bill",
+        "We will provide free electricity to poor households under PM Surya Ghar Muft Bijli Yojana.",
+        "and electricity networks.",
+        "power to generate affordable electricity.",
+        "Due to our focus on the environment, we have reached 44% of our electricity generation capacity from"
+      ]
+    },
+    {
+      "category": "Economic Development and Employment",
+      "party1HasStatement": true,
+      "party1Statements": [
+        "Even as liberalisation and reforms caused economic growth to boom under successive",
+        "suitable for jobs in the service industry (e.g. hospitality, \ntourism, digital marketing, paramedical, paralegal, etc.)",
+        "reiterate our commitment to an open economy in which economic growth will be driven by the private sector comple-",
+        "there are more job opportunities in sectors that use"
+      ],
+      "party2HasStatement": true,
+      "party2Statements": [
+        "Bharat into a global centre for high quality services including tourism to generate high value and diverse",
+        "work, they are contributing a lot to Bharat’s economic growth.",
+        "healthcare, education, retail and tourism with an aim to increase their income.",
+        "Providing New Employment Opportunities in Tourism",
+        "expand the range of programmes to further expand the tourism sector and increase employment",
+        "Eco Tourism and Homestay.",
+        "cutting-edge technology and sustainable methods to drive economic growth and establish a",
+        "In line with our vision for enhanced connectivity and economic growth, we will expand the number of",
+        "Sustainable ecotourism in select under-explored regions spread across Bharat.",
+        "Riverine Tourism along all major river ecosystems of Bharat.",
+        "Island tourism hubs in Lakshadweep and Andaman and Nicobar Islands.",
+        "Adventure Tourism in the North East and other Hill States.",
+        "We will transform our islands into premier global tourism destinations by developing world-class beach",
+        "sustainable tourism practices."
+      ]
+    },
+    {
+      "category": "Social Welfare and Poverty Alleviation",
+      "party1HasStatement": true,
+      "party1Statements": [
+        "their social security.",
+        "and social security for our soldiers."
+      ],
+      "party2HasStatement": true,
+      "party2Statements": [
+        "Established the basic social security framework for unorganised workers by ensuring their",
+        "We will ensure seamless access to social security benefits and other essential government services to",
+        "Including Auto, Taxi, Truck and Other Drivers in All Social Security Schemes",
+        "Social Security through Post Offices and Digital India",
+        "We have successfully implemented social security insurance schemes like PM Jeevan Bima and Suraksha",
+        "India network to provide comprehensive social security cover for accident and life insurance.",
+        "Providing Affordable Housing Priority to Divyangs under the PM Awas Yojana",
+        "Promoting Affordable Housing",
+        "50\n\n51\nPromoting Affordable Housing"
+      ]
+    },
+    {
+      "category": "Urban Planning and Housing",
+      "party1HasStatement": true,
+      "party1Statements": [
+        "Rural and Urban Development..............................................................................................",
+        "public spaces, schools and colleges.",
+        "to rural development and urban development, and provide"
+      ],
+      "party2HasStatement": true,
+      "party2Statements": [
+        "INFRASTRUCTURE DEVELOPMENT",
+        "We will promote Bharat's exports through international cooperation, infrastructure development and"
+      ]
+    },
+    {
+      "category": "Arts, Culture, and Heritage Preservation",
+      "party1HasStatement": true,
+      "party1Statements": [
+        "sports and cultural activities without discrimination.",
+        "efforts to establish museums, art galleries, libraries"
+      ],
+      "party2HasStatement": true,
+      "party2Statements": [
+        "up 10 Tribal Freedom Fighter Museums",
+        "Our rich cultural heritage is the centre of global attraction.",
+        "19\n\n20\nJoint families are an important factor of our robust social and cultural heritage.",
+        "Joint families are an important factor of our robust social and cultural heritage.",
+        "rich cultural heritage to produce innovative and high-quality toys.",
+        "Continuing our initiative to set up Tribal Freedom Fighter Museums to celebrate the",
+        "socio-cultural heritage and contribution of tribal freedom fighters to our freedom movement.",
+        "Celebrating Bharat’s Rich Cultural Heritage",
+        "Bharatiya history and work towards making it one of the most liked museums in the world."
+      ]
+    },
+    {
+      "category": "Technology, Innovation, and Digital Infrastructure",
+      "party1HasStatement": true,
+      "party1Statements": [
+        "to promote research and development in sports scienc-",
+        "include the changes in the global economy, advanced technology such as Artificial Intelligence, robotics and machine",
+        "(e.) to work on digital/cybersecurity issues that may"
+      ],
+      "party2HasStatement": true,
+      "party2Statements": [
+        "We will create a suite of public cybersecurity products to help small traders and MSMEs protect",
+        "We will leverage Big Data analytics, artificial intelligence, drones and satellite imagery",
+        "capital to the industry and investing in research and development.",
+        "We will successfully operationalize PM Mitra parks, invest in research and development of new",
+        "Digital Infrastructure",
+        "village with broadband, making high-speed internet accessible to all."
+      ]
+    },
+    {
+      "category": "Community Development and Youth Empowerment",
+      "party1HasStatement": false,
+      "party1Statements": [],
+      "party2HasStatement": false,
+      "party2Statements": []
+    },
+    {
+      "category": "Women's Rights and Gender Equality",
+      "party1HasStatement": true,
+      "party1Statements": [
+        "5. The economic empowerment of minorities is a"
+      ],
+      "party2HasStatement": true,
+      "party2Statements": [
+        "BJP believes that there cannot be gender equality till such time Bharat adopts a Uniform Civil Code,"
+      ]
+    },
+    {
+      "category": "Indigenous Rights and Tribal Affairs",
+      "party1HasStatement": false,
+      "party1Statements": [],
+      "party2HasStatement": false,
+      "party2Statements": []
+    },
+    {
+      "category": "Disability Rights and Accessibility",
+      "party1HasStatement": true,
+      "party1Statements": [
+        "accessibility and connectivity."
+      ],
+      "party2HasStatement": true,
+      "party2Statements": [
+        "Easy Accessibility of Agricultural Inputs",
+        "We will further simplify the GЃЄ portal to increase accessibility to usersϊ especially MЃMεs and small",
+        "We will further simplify the GST portal to increase accessibility to users, especially MSMEs and small"
+      ]
+    },
+    {
+      "category": "National Security and Defense",
+      "party1HasStatement": true,
+      "party1Statements": [
+        "National Security ..............................................................................",
+        "37\n\n1.The absence of a formal National Security Strategy",
+        "comprehensive National Security Strategy.",
+        "7. The National Security Council (NSC) and the office",
+        "of National Security Adviser (NSA) will be brought",
+        "8. The concept of national security in the 21st century",
+        "8. Congress recognises that national security is not"
+      ],
+      "party2HasStatement": false,
+      "party2Statements": []
+    },
+    {
+      "category": "Corruption and Good Governance",
+      "party1HasStatement": true,
+      "party1Statements": [
+        "4. For greater equity, affordability and transparency in",
+        "Charter, allow for autonomy and full accountability, and",
+        "(EVM) and the transparency of the ballot paper.",
+        "usher in an era of transparency, equity, clarity and",
+        "implementation, maintenance and accountability.",
+        "appointing the CDS to ensure transparency and military"
+      ],
+      "party2HasStatement": true,
+      "party2Statements": [
+        "Combating Corruption",
+        "54\n\nCombating Corruption",
+        "55\n\n56\nCombating Corruption"
+      ]
+    },
+    {
+      "category": "International Relations and Foreign Policy",
+      "party1HasStatement": true,
+      "party1Statements": [
+        "Foreign Policy .......................................................................................................................",
+        "multilateral trade agreements.",
+        "39\n\nFOREIGN POLICY",
+        "foreign policy.",
+        "2. There was a consensus on foreign policy since",
+        "of our foreign policy and we will make every effort to"
+      ],
+      "party2HasStatement": true,
+      "party2Statements": [
+        "A Bharat First Foreign Policy"
+      ]
+    },
+    {
+      "category": "Sports and Recreation",
+      "party1HasStatement": false,
+      "party1Statements": [],
+      "party2HasStatement": true,
+      "party2Statements": [
+        "Universal Access to Sports Infrastructure"
+      ]
+    },
+    {
+      "category": "Child Rights and Protection",
+      "party1HasStatement": false,
+      "party1Statements": [],
+      "party2HasStatement": false,
+      "party2Statements": []
+    },
+    {
+      "category": "Senior Citizen Welfare",
+      "party1HasStatement": false,
+      "party1Statements": [],
+      "party2HasStatement": false,
+      "party2Statements": []
+    },
+    {
+      "category": "Science and Research",
+      "party1HasStatement": true,
+      "party1Statements": [
+        "jobs, important innovations in education and healthcare, and exports.",
+        "4. We will protect innovation and intellectual property"
+      ],
+      "party2HasStatement": true,
+      "party2Statements": [
+        "Modi ki Guarantee for Technology and Innovations 65",
+        "We have successfully provided mentorship under the Atal Innovation Mission where more than 6,000",
+        "growth and innovation.",
+        "64\n64\n\n65\nOur vision is for Bharat to be a champion in technological innovations by becoming the",
+        "Scientific Research Fund",
+        "scientific research.",
+        "Catalysing AI Innovation for Global Leadership",
+        "We will develop a comprehensive ecosystem under the IndiaAI mission, driving AI innovation through",
+        "collaborative strategic programs and partnerships to position Bharat as a global leader in AI innovation",
+        "innovation.",
+        "INNOVATIONS",
+        "65\n\nScientific Research Fund"
+      ]
+    },
+    {
+      "category": "Media and Freedom of Expression",
+      "party1HasStatement": false,
+      "party1Statements": [],
+      "party2HasStatement": false,
+      "party2Statements": []
+    },
+    {
+      "category": "Consumer Protection and Fair Trade Practices",
+      "party1HasStatement": false,
+      "party1Statements": [],
+      "party2HasStatement": false,
+      "party2Statements": []
+    },
+    {
+      "category": "Labor Rights and Welfare",
+      "party1HasStatement": false,
+      "party1Statements": [],
+      "party2HasStatement": false,
+      "party2Statements": []
+    },
+    {
+      "category": "Disaster Management and Emergency Response",
+      "party1HasStatement": false,
+      "party1Statements": [],
+      "party2HasStatement": true,
+      "party2Statements": [
+        "We will strengthen the Emergency Response Support System and enhance the capabilities of",
+        "our humanitarian assistance and disaster relief programmes."
+      ]
+    }
+  ]
+}

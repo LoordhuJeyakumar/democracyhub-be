@@ -1,0 +1,169 @@
+{
+  "Healthcare": [
+    "healthcare",
+    "health",
+    "medical",
+    "medicine"
+  ],
+  "Education": [
+    "education",
+    "school",
+    "university",
+    "curriculum",
+    "student"
+  ],
+  "Rural Development and Agriculture": [
+    "rural",
+    "agriculture",
+    "farmer",
+    "crop",
+    "farming"
+  ],
+  "Infrastructure and Transportation": [
+    "infrastructure",
+    "road",
+    "railway",
+    "airport",
+    "transportation",
+    "traffic"
+  ],
+  "Environment and Energy": [
+    "environment",
+    "energy",
+    "renewable",
+    "sustainable",
+    "climate",
+    "conservation",
+    "pollution",
+    "green",
+    "recycling"
+  ],
+  "Public Safety and Law Enforcement": [
+    "safety",
+    "law",
+    "police",
+    "emergency",
+    "security",
+    "enforcement"
+  ],
+  "Public Services and Utilities": [
+    "water",
+    "electricity"
+  ],
+  "Economic Development and Employment": [
+    "economy",
+    "employment",
+    "jobs",
+    "business",
+    "industry",
+    "trade",
+    "investment"
+  ],
+  "Social Welfare and Poverty Alleviation": [
+    "poverty",
+    "housing",
+    "community",
+    "support",
+    "benefits"
+  ],
+  "Urban Planning and Housing": [
+    "housing",
+    "development",
+    "city"
+  ],
+  "Arts, Culture, and Heritage Preservation": [
+    "arts",
+    "culture",
+    "heritage",
+    "museum",
+    "history",
+    "preservation"
+  ],
+  "Technology, Innovation, and Digital Infrastructure": [
+    "technology",
+    "innovation",
+    "digital",
+    "internet",
+    "cybersecurity",
+    "research",
+    "development"
+  ],
+  "Community Development and Youth Empowerment": [
+    "community",
+    "youth",
+    "empowerment",
+    "leadership"
+  ],
+  "Women's Rights and Gender Equality": [
+    "women",
+    "gender",
+    "equality",
+    "rights",
+    "empowerment",
+    "violence"
+  ],
+  "Indigenous Rights and Tribal Affairs": [
+    "indigenous",
+    "tribal",
+    "rights",
+    "community",
+    "culture"
+  ],
+  "Disability Rights and Accessibility": [
+    "accessibility",
+    "rights",
+    "inclusive"
+  ],
+  "National Security and Defense": [
+    "security",
+    "defense",
+    "military"
+  ],
+  "Corruption and Good Governance": [
+    "corruption",
+    "governance"
+  ],
+  "International Relations and Foreign Policy": [
+    "international",
+    "foreign",
+    "policy"
+  ],
+  "Sports and Recreation": [
+    "sports",
+    "fitness"
+  ],
+  "Child Rights and Protection": [
+    "protection",
+    "rights",
+    "safety"
+  ],
+  "Senior Citizen Welfare": [
+    "senior",
+    "elderly",
+    "welfare",
+    "care"
+  ],
+  "Science and Research": [
+    "science",
+    "research",
+    "innovation",
+    "development"
+  ],
+  "Media and Freedom of Expression": [
+    "freedom"
+  ],
+  "Consumer Protection and Fair Trade Practices": [
+    "protection",
+    "rights"
+  ],
+  "Labor Rights and Welfare": [
+    "rights",
+    "welfare"
+  ],
+  "Disaster Management and Emergency Response": [
+    "disaster",
+    "management",
+    "emergency",
+    "response"
+  ]
+}
