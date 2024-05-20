@@ -33,4 +33,9 @@ commentRouter.post(
   authMiddleware.verifyAccesToken,
   commentsController.upvoteComment
 );
+commentRouter.post(
+  "/downVote/:commentId",
+  authMiddleware.verifyAccesToken,
+  commentsController.downvoteComment
+);
 module.exports = commentRouter;
