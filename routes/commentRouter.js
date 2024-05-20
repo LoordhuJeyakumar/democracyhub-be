@@ -28,4 +28,9 @@ commentRouter.get(
   authMiddleware.verifyAccesToken,
   commentsController.getAllComments
 );
+commentRouter.post(
+  "/upVote/:commentId",
+  authMiddleware.verifyAccesToken,
+  commentsController.upvoteComment
+);
 module.exports = commentRouter;

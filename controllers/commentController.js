@@ -127,6 +127,24 @@ const commentsController = {
       return common500Error(error, response);
     }
   },
+
+  upvoteComment: async (request, response) => {
+    try {
+      const { commentId } = request.params;
+      if (!commentId) {
+        return response.status(400).json({ message: "commentId missing" });
+      }
+      let existComment = await findCommentById(commentId, response);
+      if (!existComment) return;
+      existComment.upvotes += 1;
+      let updatedComment = await existComment.save();
+      return response
+        .status(200)
+        .json({ message: "Comment upvoted successfully", updatedComment });
+    } catch (error) {
+      return common500Error(error, response);
+    }
+  },
 };
 
 module.exports = commentsController;
