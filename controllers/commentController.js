@@ -56,6 +56,47 @@ const commentsController = {
       return common500Error(error, response);
     }
   },
+  updateComment: async (request, response) => {
+    try {
+      const { commentId } = request.params;
+      const { content } = request.body;
+      const userId = request.userId;
+
+      // Check if content is provided
+      if (!content) {
+        return response.status(400).json({ message: "Content is required" });
+      }
+
+      // Use the findCommentById helper function
+      let existComment = await findCommentById(commentId, response);
+      if (!existComment) return;
+
+      // Check if the user is the author of the comment
+      if (existComment.createdBy.toString() !== userId) {
+        return response.status(403).json({ message: "Access denied" });
+      }
+
+      existComment.content = content;
+      let updatedComment = await existComment.save();
+
+      if (updatedComment) {
+        return response.json({
+          message: "Comment updated successfully",
+          updatedComment,
+        });
+      }
+    } catch (error) {
+      return common500Error(error, response);
+    }
+  },
+
+  deleteCommentById: async (request, response) => {
+    try {
+        
+    } catch (error) {
+        
+    }
+  },
 };
 
 module.exports = commentsController;
