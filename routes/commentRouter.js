@@ -18,9 +18,14 @@ commentRouter.delete(
   authMiddleware.verifyAccesToken,
   commentsController.deleteCommentById
 );
-commentRouter.delete(
+commentRouter.get(
   "/:commentId",
   authMiddleware.verifyAccesToken,
   commentsController.getCommentById
+);
+commentRouter.get(
+  "/:localIssueId",
+  authMiddleware.verifyAccesToken,
+  commentsController.getAllComments
 );
 module.exports = commentRouter;

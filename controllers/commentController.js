@@ -110,6 +110,23 @@ const commentsController = {
       return common500Error(error, response);
     }
   },
+  getAllComments: async (request, response) => {
+    try {
+      const { localIssueId } = request.params;
+      if (!localIssueId) {
+        return response.status(400).json({ message: "localIssue Id missing" });
+      }
+
+      const localIssueComments = CommentModal.find({
+        localIssue: localIssueId,
+      });
+      return response
+        .status(200)
+        .json({ message: "All comments details fetched", localIssueComments });
+    } catch (error) {
+      return common500Error(error, response);
+    }
+  },
 };
 
 module.exports = commentsController;
