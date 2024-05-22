@@ -1,5 +1,5 @@
 const usersController = require("../controllers/usersController");
-const authMiddleware = require("../middlewares/authMiddleware");
+const { authMiddleware } = require("../middlewares/authMiddleware");
 
 const usersRouter = require("express").Router();
 usersRouter.post("/", usersController.createUser);
@@ -11,6 +11,7 @@ usersRouter.get(
 );
 usersRouter.get(
   "/verify/:userId/:verifyToken",
+  authMiddleware.verifyAccesToken,
   usersController.verifyActivationToken
 );
 usersRouter.get(

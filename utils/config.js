@@ -25,6 +25,8 @@ const envProcess = {
   FRONTEND_BASEURI: process.env.FRONTEND_BASEURI, // Base URI for the frontend
 
   JWT_SECRET: process.env.JWT_SECRET, // Secret key for JWT authentication
+  MONGO_DB_NAME: process.env.MONGO_DB_NAME,
+  MONGODB_CONNECTION_URI: process.env.MONGODB_CONNECTION_URI,
 };
 
 // Exporting the envProcess object
