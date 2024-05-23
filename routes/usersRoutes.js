@@ -11,7 +11,7 @@ usersRouter.put(
 usersRouter.post("/login", usersController.login);
 usersRouter.get(
   "/:userId",
-  authMiddleware.verifyAccesToken,
+
   usersController.retrieveUser
 );
 usersRouter.get(
