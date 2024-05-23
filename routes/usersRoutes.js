@@ -3,6 +3,11 @@ const { authMiddleware } = require("../middlewares/authMiddleware");
 
 const usersRouter = require("express").Router();
 usersRouter.post("/", usersController.createUser);
+usersRouter.put(
+  "/:userId",
+  authMiddleware.verifyAccesToken,
+  usersController.updateUserById
+);
 usersRouter.post("/login", usersController.login);
 usersRouter.get(
   "/:userId",
@@ -11,7 +16,7 @@ usersRouter.get(
 );
 usersRouter.get(
   "/verify/:userId/:verifyToken",
-  authMiddleware.verifyAccesToken,
+
   usersController.verifyActivationToken
 );
 usersRouter.get(

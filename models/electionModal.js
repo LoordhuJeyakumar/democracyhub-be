@@ -8,6 +8,7 @@ const electionSchema = new mongoose.Schema(
       trim: true,
       maxlength: [100, "Election name cannot exceed 100 characters"],
     },
+    description: { type: String },
     year: {
       type: Number,
       required: [true, "Election year is required"],

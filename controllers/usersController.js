@@ -168,6 +168,12 @@ const usersController = {
         { expiresIn: "8h" } // Access token expires in 8 hours
       );
 
+      let loggedInUser = await UserModal.findById(user._id, {
+        passwordHash: 0,
+        varification: 0,
+        verificationToken: 0,
+        resetToken: 0,
+      });
       // If everything is correct, return a 200 OK status code and the user details along with the access token
       return response.status(200).json({
         message: "Login succesfull",
@@ -175,6 +181,8 @@ const usersController = {
         name: user.name,
         email: user.email,
         accessToken,
+        expiresIn: 8 * 60 * 60, // 8 hours in seconds
+        loggedInUser,
       });
     } catch (error) {
       // If an error occurs, log the error and return a 500 Internal Server Error status code and an error message
@@ -476,6 +484,53 @@ const usersController = {
         .json({ error: "Internal Server Error", error: error.message });
     }
   },
+  updateUserById: async (request,response)=>{
+    try {
+      // get the userId from the request parameters
+      const { userId } = request.params;
+      
+
+      // Checking if userId is provided in the request
+      if (!userId) {
+        // Respond with Bad Request (400) if 'userId' is missing
+        return response.status(400).json({ message: "UserId missing" });
+      }
+
+      // Find the user with the provided userId in the database
+      // Excluding the fields verificationToken, passwordHash, and _v from the result
+      let user = await UserModal.findById(userId, {
+        verificationToken: 0,
+        passwordHash: 0,
+        isAdmin:0,
+        _v: 0,
+        
+      });
+
+      // Check if the user with the provided ID exists
+      if (!user) {
+        // Respond with Unauthorized (401) if user not found
+        return response
+          .status(401)
+          .json({ message: "user does not exist, Please check userId!" });
+      }
+
+      const updatedUser =  await UserModal.findByIdAndUpdate(userId, request.body,{new:true})
+
+      if(updatedUser){
+        return response.status(200).json({
+          message: "User details updated successfully ",
+          updatedUser,
+        });
+      }
+    } catch (error) {
+      // If an error occurs, log the error and return a 500 Internal Server Error status code and an error message
+
+      console.error(error);
+      return response
+        .status(500)
+        .json({ error: "Internal Server Error", error: error.message });
+    }
+  }
 };
 
 module.exports = usersController;
