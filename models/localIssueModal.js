@@ -31,10 +31,12 @@ const localIssueSchema = new mongoose.Schema(
       required: [true, "Local issue description is required"],
       trim: true,
     },
-    photo: {
-      type: String,
-      default: "",
-    },
+    photos: [
+      {
+        type: String, // Store photo file names or URLs
+        default: "",
+      },
+    ],
     location: {
       type: String,
       required: [true, "Location is required for the local issue"],
@@ -49,12 +51,26 @@ const localIssueSchema = new mongoose.Schema(
     constituency: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Constituency",
-      required: true,
+      /* required: true, */
+    },
+    constituencyName: {
+      type: String,
+      /* required: [true, "constituency Name is required for the local issue"], */
+      default: "",
+      trim: true,
     },
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
+    },
+    createdUserName: {
+      type: String,
+      required: [
+        true,
+        "Issue created User Name is required for the local issue",
+      ],
+      trim: true,
     },
     status: {
       type: String,
@@ -69,15 +85,7 @@ const localIssueSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
-    reportedBy: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-      required: true,
-    },
-    reportedAt: {
-      type: Date,
-      default: Date.now,
-    },
+
     resolutionDescription: {
       type: String,
       default: "",
@@ -88,7 +96,7 @@ const localIssueSchema = new mongoose.Schema(
     },
     resolvedAt: {
       type: Date,
-      default:null
+      default: null,
     },
     comments: [
       {

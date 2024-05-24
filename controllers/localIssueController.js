@@ -1,9 +1,22 @@
 const LocalIssueModal = require("../models/localIssueModal");
+const UserModal = require("../models/userModal");
+const { uploadFile } = require("../utils/awsS3Service");
 
 const localIssueController = {
-  createIssue: async (request, response) => {
+  /* createIssue: async (request, response) => {
     try {
       const { title, description, location, category } = request.body;
+      const files = request.files;
+      console.log(request);
+      console.log(request.files);
+
+      if (!files) {
+        return response.status(400).json({ message: "No files uploaded" });
+      }
+      // Upload photos to S3
+      const photoUrls = await Promise.all(
+        files.map((file) => uploadFile(file).then((data) => data.Location))
+      );
 
       let existIssue = await LocalIssueModal.findOne({
         title,
@@ -18,7 +31,15 @@ const localIssueController = {
         });
       }
 
-      let newIssue = await LocalIssueModal.create(request.body);
+      const newIssueData = {
+        title,
+        description,
+        location,
+        category,
+        photos: photoUrls,
+      };
+
+      let newIssue = await LocalIssueModal.create(newIssueData);
 
       if (newIssue) {
         return response
@@ -31,7 +52,120 @@ const localIssueController = {
         .status(500)
         .json({ error: "Internal Server Error", error: error.message });
     }
+  }, */
+
+  /* createIssue: async (request, response) => {
+    try {
+      const { title, description, location, category } = request.body;
+      const files = request.files;
+      let user = await UserModal.findById(request.userId);
+      if (!files || files.length === 0) {
+        return response.status(400).json({ message: "No files uploaded" });
+      }
+      console.log(user);
+      // Upload photos to S3
+      const photoUrls = await Promise.all(
+        files.map((file) => uploadFile(file).then((data) => data.Location))
+      );
+
+      let existIssue = await LocalIssueModal.findOne({
+        title,
+        description,
+        location,
+        category,
+      });
+
+      if (existIssue) {
+        return response.status(409).json({
+          message: "This issue details already exist",
+        });
+      }
+
+      const newIssueData = {
+        title,
+        description,
+        location,
+        category,
+        photos: photoUrls,
+        createdBy: user._id,
+        createdUserName: user.name,
+      };
+
+      let newIssue = await LocalIssueModal.create(newIssueData);
+
+      if (newIssue) {
+        return response
+          .status(201)
+          .json({ message: "Issue created successfully", newIssue });
+      }
+    } catch (error) {
+      console.error(error);
+      return response
+        .status(500)
+        .json({ error: "Internal Server Error", error: error.message });
+    }
+  }, */
+  createIssue: async (request, response) => {
+    try {
+      const { title, description, location, category } = request.body;
+      const files = request.files;
+      let user = await UserModal.findById(request.userId);
+
+      if (!user) {
+        return response.status(404).json({ message: "User not found" });
+      }
+
+      // Check if the issue already exists
+      let existIssue = await LocalIssueModal.findOne({
+        title,
+        description,
+        location,
+        category,
+      });
+
+      if (existIssue) {
+        return response.status(409).json({
+          message: "This issue details already exist",
+        });
+      }
+
+      // Upload photos to S3 if files are provided
+      let photoUrls = [];
+      if (files && files.length > 0) {
+        photoUrls = await Promise.all(
+          files.map((file) => uploadFile(file).then((data) => data.Location))
+        );
+      }
+
+      const newIssueData = {
+        title,
+        description,
+        location,
+        category,
+        createdBy: user._id,
+        createdUserName: user.name,
+      };
+
+      // Conditionally add photos field if there are photos
+      if (photoUrls.length > 0) {
+        newIssueData.photos = photoUrls;
+      }
+
+      let newIssue = await LocalIssueModal.create(newIssueData);
+
+      if (newIssue) {
+        return response
+          .status(201)
+          .json({ message: "Issue created successfully", newIssue });
+      }
+    } catch (error) {
+      console.error(error);
+      return response
+        .status(500)
+        .json({ error: "Internal Server Error", error: error.message });
+    }
   },
+
   updateLocalIssue: async (request, response) => {
     try {
       let { localIssueId } = request.params;

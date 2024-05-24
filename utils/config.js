@@ -27,6 +27,10 @@ const envProcess = {
   JWT_SECRET: process.env.JWT_SECRET, // Secret key for JWT authentication
   MONGO_DB_NAME: process.env.MONGO_DB_NAME,
   MONGODB_CONNECTION_URI: process.env.MONGODB_CONNECTION_URI,
+  AWS_ACCESS_KEY: process.env.AWS_ACCESS_KEY,
+  AWS_SECRET_KEY: process.env.AWS_SECRET_KEY,
+  AWS_S3_BUCKET: process.env.AWS_S3_BUCKET,
+  AWS_REGION: process.env.AWS_REGION,
 };
 
 // Exporting the envProcess object

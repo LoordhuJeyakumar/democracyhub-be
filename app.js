@@ -1,5 +1,6 @@
 // Import the Express framework for creating a server
 const express = require("express");
+const bodyParser = require("body-parser");
 
 // Import the cors middleware to enable cross-origin requests
 const cors = require("cors");
@@ -13,7 +14,9 @@ const app = express();
 app.use(cors());
 
 // Using built-in middleware function in Express to parse incoming requests with JSON payloads
-app.use(express.json());
+/* app.use(express.json()); */
+// Middleware setup
+app.use(bodyParser.json());
 app.get("/", (req, res) =>
   res.status(200).send(`
     <h1></h1>
