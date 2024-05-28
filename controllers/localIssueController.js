@@ -279,6 +279,7 @@ const localIssueController = {
   upVoteIssue: async (request, response) => {
     try {
       const { localIssueId } = request.params;
+      const userId = request.userId;
 
       if (!localIssueId) {
         return response.status(400).json({ message: "localIssueId missing" });
@@ -298,7 +299,25 @@ const localIssueController = {
         });
       }
 
+      // Check if the user has already upvoted
+      if (existIssue.upvotedBy.includes(userId)) {
+        return response
+          .status(400)
+          .json({ message: "User has already upvoted this issue" });
+      }
+
+      // If not, increment upvotes and add user to upvotedBy array
       existIssue.upvotes += 1;
+      existIssue.upvotedBy.push(userId);
+
+      // If the user had previously downvoted the issue, decrement downvotes and remove user from downvotedBy array
+      if (existIssue.downvotedBy.includes(userId)) {
+        existIssue.downvotes -= 1;
+        const index = existIssue.downvotedBy.indexOf(userId);
+        if (index > -1) {
+          existIssue.downvotedBy.splice(index, 1);
+        }
+      }
 
       let updateIssue = await existIssue.save();
       if (updateIssue) {
@@ -317,7 +336,8 @@ const localIssueController = {
   downVoteIssue: async (request, response) => {
     try {
       const { localIssueId } = request.params;
-
+      const userId = request.userId;
+      
       if (!localIssueId) {
         return response.status(400).json({ message: "localIssueId missing" });
       }
@@ -336,7 +356,25 @@ const localIssueController = {
         });
       }
 
+      // Check if the user has already downvoted
+      if (existIssue.downvotedBy.includes(userId)) {
+        return response
+          .status(400)
+          .json({ message: "User has already downvoted this issue" });
+      }
+
+      // If not, increment downvotes and add user to downvotedBy array
       existIssue.downvotes += 1;
+      existIssue.downvotedBy.push(userId);
+
+      // If the user had previously upvoted the issue, decrement upvotes and remove user from upvotedBy array
+    if (existIssue.upvotedBy.includes(userId)) {
+      existIssue.upvotes -= 1;
+      const index = existIssue.upvotedBy.indexOf(userId);
+      if (index > -1) {
+        existIssue.upvotedBy.splice(index, 1);
+      }
+    }
 
       let updateIssue = await existIssue.save();
       if (updateIssue) {

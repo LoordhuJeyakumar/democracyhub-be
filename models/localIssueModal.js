@@ -81,11 +81,22 @@ const localIssueSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
+    upvotedBy: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
     downvotes: {
       type: Number,
       default: 0,
     },
-
+    downvotedBy: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
     resolutionDescription: {
       type: String,
       default: "",

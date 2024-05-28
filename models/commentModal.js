@@ -26,7 +26,14 @@ const commentSchema = new mongoose.Schema(
       type: Number,
       default: 0,
     },
+    replies: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Comment",
+      },
+    ],
   },
+
   {
     timestamps: true, // Enable timestamps (createdAt, updatedAt) for the schema
   }
