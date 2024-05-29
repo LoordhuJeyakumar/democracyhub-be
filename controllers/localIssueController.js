@@ -291,6 +291,8 @@ const localIssueController = {
         downvotes: 1,
         title: 1,
         description: 1,
+        upvotedBy:1,
+        downvotedBy:1
       });
 
       if (!existIssue) {
@@ -300,18 +302,18 @@ const localIssueController = {
       }
 
       // Check if the user has already upvoted
-      if (existIssue.upvotedBy.includes(userId)) {
+      if (existIssue.upvotedBy?.includes(userId)) {
         return response
           .status(400)
           .json({ message: "User has already upvoted this issue" });
       }
-
+     
       // If not, increment upvotes and add user to upvotedBy array
       existIssue.upvotes += 1;
       existIssue.upvotedBy.push(userId);
 
       // If the user had previously downvoted the issue, decrement downvotes and remove user from downvotedBy array
-      if (existIssue.downvotedBy.includes(userId)) {
+      if (existIssue.downvotedBy?.includes(userId)) {
         existIssue.downvotes -= 1;
         const index = existIssue.downvotedBy.indexOf(userId);
         if (index > -1) {
@@ -348,6 +350,8 @@ const localIssueController = {
         downvotes: 1,
         title: 1,
         description: 1,
+        upvotedBy:1,
+        downvotedBy:1
       });
 
       if (!existIssue) {
@@ -357,7 +361,7 @@ const localIssueController = {
       }
 
       // Check if the user has already downvoted
-      if (existIssue.downvotedBy.includes(userId)) {
+      if (existIssue.downvotedBy?.includes(userId)) {
         return response
           .status(400)
           .json({ message: "User has already downvoted this issue" });
@@ -368,7 +372,7 @@ const localIssueController = {
       existIssue.downvotedBy.push(userId);
 
       // If the user had previously upvoted the issue, decrement upvotes and remove user from upvotedBy array
-    if (existIssue.upvotedBy.includes(userId)) {
+    if (existIssue.upvotedBy?.includes(userId)) {
       existIssue.upvotes -= 1;
       const index = existIssue.upvotedBy.indexOf(userId);
       if (index > -1) {
