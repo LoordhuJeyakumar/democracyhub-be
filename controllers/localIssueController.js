@@ -3,108 +3,6 @@ const UserModal = require("../models/userModal");
 const { uploadFile } = require("../utils/awsS3Service");
 
 const localIssueController = {
-  /* createIssue: async (request, response) => {
-    try {
-      const { title, description, location, category } = request.body;
-      const files = request.files;
-      console.log(request);
-      console.log(request.files);
-
-      if (!files) {
-        return response.status(400).json({ message: "No files uploaded" });
-      }
-      // Upload photos to S3
-      const photoUrls = await Promise.all(
-        files.map((file) => uploadFile(file).then((data) => data.Location))
-      );
-
-      let existIssue = await LocalIssueModal.findOne({
-        title,
-        description,
-        location,
-        category,
-      });
-
-      if (existIssue) {
-        return response.status(409).json({
-          message: `This issue details already exists`,
-        });
-      }
-
-      const newIssueData = {
-        title,
-        description,
-        location,
-        category,
-        photos: photoUrls,
-      };
-
-      let newIssue = await LocalIssueModal.create(newIssueData);
-
-      if (newIssue) {
-        return response
-          .status(201)
-          .json({ message: "Issue created succesfully", newIssue });
-      }
-    } catch (error) {
-      console.error(error);
-      return response
-        .status(500)
-        .json({ error: "Internal Server Error", error: error.message });
-    }
-  }, */
-
-  /* createIssue: async (request, response) => {
-    try {
-      const { title, description, location, category } = request.body;
-      const files = request.files;
-      let user = await UserModal.findById(request.userId);
-      if (!files || files.length === 0) {
-        return response.status(400).json({ message: "No files uploaded" });
-      }
-      console.log(user);
-      // Upload photos to S3
-      const photoUrls = await Promise.all(
-        files.map((file) => uploadFile(file).then((data) => data.Location))
-      );
-
-      let existIssue = await LocalIssueModal.findOne({
-        title,
-        description,
-        location,
-        category,
-      });
-
-      if (existIssue) {
-        return response.status(409).json({
-          message: "This issue details already exist",
-        });
-      }
-
-      const newIssueData = {
-        title,
-        description,
-        location,
-        category,
-        photos: photoUrls,
-        createdBy: user._id,
-        createdUserName: user.name,
-      };
-
-      let newIssue = await LocalIssueModal.create(newIssueData);
-
-      if (newIssue) {
-        return response
-          .status(201)
-          .json({ message: "Issue created successfully", newIssue });
-      }
-    } catch (error) {
-      console.error(error);
-      return response
-        .status(500)
-        .json({ error: "Internal Server Error", error: error.message });
-    }
-  }, */
   createIssue: async (request, response) => {
     try {
       const { title, description, location, category } = request.body;
@@ -291,8 +189,8 @@ const localIssueController = {
         downvotes: 1,
         title: 1,
         description: 1,
-        upvotedBy:1,
-        downvotedBy:1
+        upvotedBy: 1,
+        downvotedBy: 1,
       });
 
       if (!existIssue) {
@@ -301,13 +199,30 @@ const localIssueController = {
         });
       }
 
-      // Check if the user has already upvoted
+      /* // Check if the user has already upvoted
       if (existIssue.upvotedBy?.includes(userId)) {
         return response
           .status(400)
           .json({ message: "User has already upvoted this issue" });
       }
-     
+ */
+
+      // Check if the user has already upvoted
+      if (existIssue.upvotedBy?.includes(userId)) {
+        // If yes, decrement upvotes and remove user from upvotedBy array
+        existIssue.upvotes -= 1;
+        const index = existIssue.upvotedBy.indexOf(userId);
+        if (index > -1) {
+          existIssue.upvotedBy.splice(index, 1);
+        }
+        let updateIssue = await existIssue.save();
+        if (updateIssue) {
+          return response.status(200).json({
+            message: "Upvote removed successfully",
+            updateIssue,
+          });
+        }
+      }
       // If not, increment upvotes and add user to upvotedBy array
       existIssue.upvotes += 1;
       existIssue.upvotedBy.push(userId);
@@ -339,7 +254,7 @@ const localIssueController = {
     try {
       const { localIssueId } = request.params;
       const userId = request.userId;
-      
+
       if (!localIssueId) {
         return response.status(400).json({ message: "localIssueId missing" });
       }
@@ -350,8 +265,8 @@ const localIssueController = {
         downvotes: 1,
         title: 1,
         description: 1,
-        upvotedBy:1,
-        downvotedBy:1
+        upvotedBy: 1,
+        downvotedBy: 1,
       });
 
       if (!existIssue) {
@@ -360,11 +275,28 @@ const localIssueController = {
         });
       }
 
-      // Check if the user has already downvoted
+      /* // Check if the user has already downvoted
       if (existIssue.downvotedBy?.includes(userId)) {
         return response
           .status(400)
           .json({ message: "User has already downvoted this issue" });
+      } */
+
+      // Check if the user has already upvoted
+      if (existIssue.downvotedBy?.includes(userId)) {
+        // If yes, decrement upvotes and remove user from upvotedBy array
+        existIssue.downvotes -= 1;
+        const index = existIssue.downvotedBy.indexOf(userId);
+        if (index > -1) {
+          existIssue.downvotedBy.splice(index, 1);
+        }
+        let updateIssue = await existIssue.save();
+        if (updateIssue) {
+          return response.status(200).json({
+            message: "Upvote removed successfully",
+            updateIssue,
+          });
+        }
       }
 
       // If not, increment downvotes and add user to downvotedBy array
@@ -372,13 +304,13 @@ const localIssueController = {
       existIssue.downvotedBy.push(userId);
 
       // If the user had previously upvoted the issue, decrement upvotes and remove user from upvotedBy array
-    if (existIssue.upvotedBy?.includes(userId)) {
-      existIssue.upvotes -= 1;
-      const index = existIssue.upvotedBy.indexOf(userId);
-      if (index > -1) {
-        existIssue.upvotedBy.splice(index, 1);
+      if (existIssue.upvotedBy?.includes(userId)) {
+        existIssue.upvotes -= 1;
+        const index = existIssue.upvotedBy.indexOf(userId);
+        if (index > -1) {
+          existIssue.upvotedBy.splice(index, 1);
+        }
       }
-    }
 
       let updateIssue = await existIssue.save();
       if (updateIssue) {

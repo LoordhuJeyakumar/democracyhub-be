@@ -28,10 +28,15 @@ const userSchema = new mongoose.Schema(
     },
     dob: { type: Date, default: null },
     passwordHash: { type: String, required: [true, "Password is required"] },
-    varification: { type: Boolean, default: false },
+    verification: { type: Boolean, default: false },
     verificationToken: { type: String, default: "" },
     resetToken: { type: String, default: "" },
     isAdmin: { type: Boolean, default: false },
+    role: {
+      type: String,
+      enum: ["User", "Admin", "Government"],
+      default: "User",
+    },
   },
   { timestamps: true } // Enable timestamps (createdAt, updatedAt) for the schema
 );
@@ -40,3 +45,17 @@ const userSchema = new mongoose.Schema(
 const UserModal = mongoose.model("User", userSchema, "users");
 // Exporting the User model
 module.exports = UserModal;
+
+/* const users = [];
+
+for (let index = 0; index < 50; index++) {
+  users.push({
+    name: `${index}_Alice`,
+    email: `${index}_Alice@example.com`,
+    passwordHash: index,
+  });
+}
+
+console.log(users);
+
+UserModal.insertMany(users); */

@@ -1,6 +1,8 @@
 const jwt = require("jsonwebtoken");
-const UserModal = require("../models/user"); // Import your User model
+
 const { getTokenFromRequest } = require("./authMiddleware");
+const UserModal = require("../models/userModal");
+const envProcess = require("../utils/config");
 
 const adminAuthMiddleware = async (req, res, next) => {
   try {
@@ -15,13 +17,13 @@ const adminAuthMiddleware = async (req, res, next) => {
 
     if (decodedToken) {
       // Find the user in the database
-      const user = await UserModal.findById(decodedToken.id);
+      const user = await UserModal.findById(decodedToken.id).lean();
       if (!user) {
         return res.status(404).json({ message: "User not found" });
       }
 
       // Check if the user is an admin
-      if (!user.isAdmin) {
+      if (user && !user.isAdmin) {
         return res.status(403).json({ message: "Access denied" });
       }
 

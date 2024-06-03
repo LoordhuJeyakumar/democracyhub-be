@@ -1,9 +1,16 @@
 const usersController = require("../controllers/usersController");
+const adminAuthMiddleware = require("../middlewares/adminAuthMiddleware");
 const { authMiddleware } = require("../middlewares/authMiddleware");
+const paginate = require("../middlewares/paginateMiddleware");
+const UserModal = require("../models/userModal");
 
 const usersRouter = require("express").Router();
 usersRouter.post("/", usersController.createUser);
-usersRouter.put("/:userId", authMiddleware.verifyAccesToken, usersController.updateUserById);
+usersRouter.put(
+  "/:userId",
+  authMiddleware.verifyAccesToken,
+  usersController.updateUserById
+);
 usersRouter.post("/login", usersController.login);
 usersRouter.get("/:userId", usersController.retrieveUser);
 usersRouter.get(
@@ -21,5 +28,11 @@ usersRouter.post(
 );
 usersRouter.post("/resetPasswordLink", usersController.resetPasswordLink);
 usersRouter.post("/resetPassword/:userId", usersController.resetPassword);
+usersRouter.get(
+  "/",
+  adminAuthMiddleware,
+  paginate(UserModal),
+  usersController.getAllUsers
+);
 
 module.exports = usersRouter;

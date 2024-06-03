@@ -2,7 +2,7 @@ const bcrypt = require("bcrypt"); // Import the bcrypt library for password hash
 const jwt = require("jsonwebtoken"); // Import the jsonwebtoken library for creating and verifying tokens
 const envProcess = require("../utils/config"); // Import environment configuration
 const sendVerificationEmail = require("../utils/sendVerificationEmail"); // Import the function for sending verification emails
-const UserModal = require("../models/userModal"); // Import the UserModal
+const UserModal = require("../models/userModal");
 
 // Function to validate email format
 const validateEmail = (e) => {
@@ -25,15 +25,18 @@ async function sendEmail(doc, emailType) {
     return error;
   }
 }
-
+function capitalizeText(text) {
+  return text.toLowerCase().replace(/\b(\w)/g, (s) => s.toUpperCase());
+}
 // Users controller object containing user management functions
 const usersController = {
   // Create a new user
   createUser: async (request, response) => {
     try {
       // Extract name, password, and email from request body with email converted to lowercase
-      const { name, password } = request.body;
+      const { password } = request.body;
       const email = request.body.email?.toLowerCase();
+      const name = capitalizeText(request.body.name);
 
       // Check for required fields (name, password, and email)
       if (!name || !password || !email) {
@@ -55,7 +58,7 @@ const usersController = {
       // Handle existing user scenarios
       if (existingUser) {
         // User already exists and verified, return conflict
-        if (existingUser.varification) {
+        if (existingUser.verification) {
           return response.status(409).json({
             message: `User with '${email}' already exists`,
           });
@@ -142,7 +145,7 @@ const usersController = {
       }
 
       // Checking if the user's email is verified
-      if (!user.varification) {
+      if (!user.verification) {
         // If not, return a 403 Forbidden status code and an error message
         return response.status(403).json({
           message: "Your account is InActive, Please verify your email",
@@ -170,7 +173,7 @@ const usersController = {
 
       let loggedInUser = await UserModal.findById(user._id, {
         passwordHash: 0,
-        varification: 0,
+        verification: 0,
         verificationToken: 0,
         resetToken: 0,
       });
@@ -262,7 +265,7 @@ const usersController = {
       }
 
       if (user.verificationToken == verifyToken && user._id == userId) {
-        user.varification = true;
+        user.verification = true;
         user.verificationToken = "";
 
         let updatedUser = await user.save();
@@ -317,7 +320,7 @@ const usersController = {
       }
 
       if (user.resetToken == resetToken && user._id == userId) {
-        user.varification = true;
+        user.verification = true;
         user.resetToken = "";
 
         let updatedUser = await user.save();
@@ -368,7 +371,7 @@ const usersController = {
       );
 
       userBYEmail.verificationToken = verificationToken;
-      userBYEmail.varification = false;
+      userBYEmail.verification = false;
 
       let updatedUser = await userBYEmail.save();
 
@@ -392,7 +395,7 @@ const usersController = {
         .json({ error: "Internal Server Error", error: error.message });
     }
   },
-  resetPasswordLink:async(request,response)=>{
+  resetPasswordLink: async (request, response) => {
     try {
       const email = request.body.email.toLowerCase();
       if (!email) {
@@ -416,12 +419,12 @@ const usersController = {
       );
 
       userBYEmail.resetToken = resetToken;
-      userBYEmail.varification = false;
+      userBYEmail.verification = false;
 
       let updatedUser = await userBYEmail.save();
 
       if (updatedUser) {
-        let emailInfo = await sendEmail(userBYEmail,"passwordResetEmail");
+        let emailInfo = await sendEmail(userBYEmail, "passwordResetEmail");
         if (!emailInfo) {
           console.error("Error sending verification email");
         }
@@ -468,7 +471,7 @@ const usersController = {
       let newPasswordHash = bcrypt.hash(password, 10);
       userById.passwordHash = newPasswordHash;
       userById.verificationToken = "";
-      userById.varification = true;
+      userById.verification = true;
       let updatedUser = await userById.save();
       if (updatedUser) {
         return response.status(200).json({
@@ -484,11 +487,10 @@ const usersController = {
         .json({ error: "Internal Server Error", error: error.message });
     }
   },
-  updateUserById: async (request,response)=>{
+  updateUserById: async (request, response) => {
     try {
       // get the userId from the request parameters
       const { userId } = request.params;
-      
 
       // Checking if userId is provided in the request
       if (!userId) {
@@ -501,9 +503,8 @@ const usersController = {
       let user = await UserModal.findById(userId, {
         verificationToken: 0,
         passwordHash: 0,
-        isAdmin:0,
+        isAdmin: 0,
         _v: 0,
-        
       });
 
       // Check if the user with the provided ID exists
@@ -514,9 +515,13 @@ const usersController = {
           .json({ message: "user does not exist, Please check userId!" });
       }
 
-      const updatedUser =  await UserModal.findByIdAndUpdate(userId, request.body,{new:true})
+      const updatedUser = await UserModal.findByIdAndUpdate(
+        userId,
+        request.body,
+        { new: true }
+      );
 
-      if(updatedUser){
+      if (updatedUser) {
         return response.status(200).json({
           message: "User details updated successfully ",
           updatedUser,
@@ -530,7 +535,110 @@ const usersController = {
         .status(500)
         .json({ error: "Internal Server Error", error: error.message });
     }
-  }
+  },
+  /*   getAllUsers:async(request,response)=>{
+    try {
+
+    
+
+      const page = +request.query.page || 1;
+    const limit = +request.query.limit|| 50;
+
+      const allUsers =await UserModal.find({},{passwordHash:0, verificationToken:0, resetToken:0}).sort({ createdAt: -1 })
+      .skip((page - 1) * limit)
+      .limit(limit);
+ // Add logging for debugging
+ console.log("Fetched Users:", allUsers);
+      if (allUsers?.length == 0) {
+        return response.status(401).json({
+          message: "There is no user details in database!",
+        });
+      }
+  
+      return response
+        .status(200)
+        .json({ message: "All Users details fetched", allUsers });
+      
+    } catch (error) {
+      console.error(error);
+      return response
+        .status(500)
+        .json({ error: "Internal Server Error", error: error.message });
+    }
+  } */
+  /* getAllUsers: async (request, response) => {
+    try {
+      const page = +request.query.page || 1;
+      const limit = +request.query.limit || 50;
+
+      const totalUsers = await UserModal.countDocuments({});
+      const totalPages = Math.ceil(totalUsers / limit);
+
+      const allUsers = await UserModal.find(
+        {},
+        { passwordHash: 0, verificationToken: 0, resetToken: 0 }
+      )
+        .sort({ createdAt: -1 })
+        .skip((page - 1) * limit)
+        .limit(limit);
+      console.log(allUsers);
+      const nextPage = page < totalPages ? page + 1 : null;
+
+      if (allUsers.length === 0) {
+        return response.status(404).json({
+          message: "There are no user details in the database!",
+        });
+      }
+
+      return response.status(200).json({
+        message: "All Users details fetched",
+        totalPages: totalPages,
+        results: allUsers,
+        next: nextPage ? { page: nextPage } : null,
+      });
+    } catch (error) {
+      console.error(error);
+      return response.status(500).json({
+        error: "Internal Server Error",
+        message: error.message,
+      });
+    }
+  }, */
+  getAllUsers: async (req, res) => {
+    try {
+      const { startIndex, limit } = req.pagination;
+
+      const allUsers = await UserModal.find(
+        {},
+        { passwordHash: 0, verificationToken: 0, resetToken: 0 } // Example projection for UserModel
+      )
+        .sort({ createdAt: -1 })
+        .skip(startIndex)
+        .limit(limit);
+
+      if (allUsers.length === 0) {
+        return res.status(404).json({
+          message: "There are no user details in the database!",
+        });
+      }
+
+      return res.status(200).json({
+        message: "All Users details fetched",
+        totalPages: res.pagination.totalPages,
+        currentPage: res.pagination.currentPage,
+        results: allUsers,
+        next: res.pagination.next,
+        prev: res.pagination.prev,
+        totalUsers: res.pagination.total,
+      });
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({
+        error: "Internal Server Error",
+        message: error.message,
+      });
+    }
+  },
 };
 
 module.exports = usersController;
