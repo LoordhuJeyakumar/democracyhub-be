@@ -639,6 +639,37 @@ const usersController = {
       });
     }
   },
+  deleteUserByAdmin: async (request, response) => {
+    try {
+      const { userId } = request.params;
+      // Checking if userId is provided in the request
+      if (!userId) {
+        // Respond with Bad Request (400) if 'userId' is missing
+        return response.status(400).json({ message: "UserId missing" });
+      }
+
+      let existUser = await UserModal.findById(userId);
+
+      if (!existUser) {
+        return response.status(401).json({
+          message: "User details does not exist, Please check UserId!",
+        });
+      }
+
+      let deletedUser = await existUser.deleteOne();
+      if (deletedUser) {
+        return response
+          .status(200)
+          .json({ message: "User details succesfully deleted", deletedUser });
+      }
+    } catch (error) {
+      console.error(error);
+      return response.status(500).json({
+        error: "Internal Server Error",
+        message: error.message,
+      });
+    }
+  },
 };
 
 module.exports = usersController;

@@ -12,7 +12,11 @@ usersRouter.put(
   usersController.updateUserById
 );
 usersRouter.post("/login", usersController.login);
-usersRouter.get("/:userId", usersController.retrieveUser);
+usersRouter.get(
+  "/:userId",
+  authMiddleware.verifyAccesToken,
+  usersController.retrieveUser
+);
 usersRouter.get(
   "/verify/:userId/:verifyToken",
 
@@ -33,6 +37,12 @@ usersRouter.get(
   adminAuthMiddleware,
   paginate(UserModal),
   usersController.getAllUsers
+);
+
+usersRouter.delete(
+  "/:userId",
+  adminAuthMiddleware,
+  usersController.deleteUserByAdmin
 );
 
 module.exports = usersRouter;
