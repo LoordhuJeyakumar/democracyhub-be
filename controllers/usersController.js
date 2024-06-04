@@ -460,7 +460,7 @@ const usersController = {
           .json({ message: "Password and confirm password do not match" });
       }
 
-      let userById = UserModal.findById(userId);
+      let userById = await UserModal.findById(userId);
       if (!userById) {
         // Respond with Unauthorized (401) if user not found
         return response
@@ -536,74 +536,6 @@ const usersController = {
         .json({ error: "Internal Server Error", error: error.message });
     }
   },
-  /*   getAllUsers:async(request,response)=>{
-    try {
-
-    
-
-      const page = +request.query.page || 1;
-    const limit = +request.query.limit|| 50;
-
-      const allUsers =await UserModal.find({},{passwordHash:0, verificationToken:0, resetToken:0}).sort({ createdAt: -1 })
-      .skip((page - 1) * limit)
-      .limit(limit);
- // Add logging for debugging
- console.log("Fetched Users:", allUsers);
-      if (allUsers?.length == 0) {
-        return response.status(401).json({
-          message: "There is no user details in database!",
-        });
-      }
-  
-      return response
-        .status(200)
-        .json({ message: "All Users details fetched", allUsers });
-      
-    } catch (error) {
-      console.error(error);
-      return response
-        .status(500)
-        .json({ error: "Internal Server Error", error: error.message });
-    }
-  } */
-  /* getAllUsers: async (request, response) => {
-    try {
-      const page = +request.query.page || 1;
-      const limit = +request.query.limit || 50;
-
-      const totalUsers = await UserModal.countDocuments({});
-      const totalPages = Math.ceil(totalUsers / limit);
-
-      const allUsers = await UserModal.find(
-        {},
-        { passwordHash: 0, verificationToken: 0, resetToken: 0 }
-      )
-        .sort({ createdAt: -1 })
-        .skip((page - 1) * limit)
-        .limit(limit);
-      console.log(allUsers);
-      const nextPage = page < totalPages ? page + 1 : null;
-
-      if (allUsers.length === 0) {
-        return response.status(404).json({
-          message: "There are no user details in the database!",
-        });
-      }
-
-      return response.status(200).json({
-        message: "All Users details fetched",
-        totalPages: totalPages,
-        results: allUsers,
-        next: nextPage ? { page: nextPage } : null,
-      });
-    } catch (error) {
-      console.error(error);
-      return response.status(500).json({
-        error: "Internal Server Error",
-        message: error.message,
-      });
-    }
-  }, */
   getAllUsers: async (req, res) => {
     try {
       const { startIndex, limit } = req.pagination;
@@ -661,6 +593,287 @@ const usersController = {
         return response
           .status(200)
           .json({ message: "User details succesfully deleted", deletedUser });
+      }
+    } catch (error) {
+      console.error(error);
+      return response.status(500).json({
+        error: "Internal Server Error",
+        message: error.message,
+      });
+    }
+  },
+  deleteUserByUser: async (request, response) => {
+    try {
+      const { userId } = request.params;
+      // Checking if userId is provided in the request
+      if (!userId) {
+        // Respond with Bad Request (400) if 'userId' is missing
+        return response.status(400).json({ message: "UserId missing" });
+      }
+
+      if (userId != request.userId) {
+        return response
+          .status(401)
+          .json({
+            message: "You are not authorized to delete another user's account.",
+          });
+      }
+
+      let existUser = await UserModal.findById(userId);
+
+      if (!existUser) {
+        return response.status(401).json({
+          message: "User details does not exist, Please check UserId!",
+        });
+      }
+
+      let deletedUser = await existUser.deleteOne();
+      if (deletedUser) {
+        return response
+          .status(200)
+          .json({ message: "User details succesfully deleted", deletedUser });
+      }
+    } catch (error) {
+      console.error(error);
+      return response.status(500).json({
+        error: "Internal Server Error",
+        message: error.message,
+      });
+    }
+  },
+  deActivateUserByAdmin: async (request, response) => {
+    try {
+      const { userId } = request.params;
+      // Checking if userId is provided in the request
+      if (!userId) {
+        // Respond with Bad Request (400) if 'userId' is missing
+        return response.status(400).json({ message: "UserId missing" });
+      }
+
+      let existUser = await UserModal.findById(userId);
+
+      if (!existUser) {
+        return response.status(401).json({
+          message: "User details does not exist, Please check UserId!",
+        });
+      }
+
+      // Check if the user is already deactivated
+      if (!existUser.verification) {
+        return response.status(409).json({
+          message: "User is already deactivated",
+        });
+      }
+
+      let updatedUser = await UserModal.findByIdAndUpdate(
+        existUser._id,
+        {
+          verification: false,
+        },
+        { new: true }
+      ); // Add { new: true }
+
+      if (updatedUser) {
+        return response.status(200).json({
+          message: "User deActivated successfully ",
+          updatedUser,
+        });
+      }
+    } catch (error) {
+      console.error(error);
+      return response.status(500).json({
+        error: "Internal Server Error",
+        message: error.message,
+      });
+    }
+  },
+  deActivateUserByUser: async (request, response) => {
+    try {
+      const { userId } = request.params;
+      // Checking if userId is provided in the request
+      if (!userId) {
+        // Respond with Bad Request (400) if 'userId' is missing
+        return response.status(400).json({ message: "UserId missing" });
+      }
+
+      let existUser = await UserModal.findById(userId);
+
+      if (!existUser) {
+        return response.status(401).json({
+          message: "User details does not exist, Please check UserId!",
+        });
+      }
+
+      // Check if the user is already deactivated
+      if (!existUser.verification) {
+        return response.status(409).json({
+          message: "User is already deactivated",
+        });
+      }
+
+      let updatedUser = await UserModal.findByIdAndUpdate(
+        existUser._id,
+        {
+          verification: false,
+        },
+        { new: true }
+      ); // Add { new: true }
+
+      if (updatedUser) {
+        return response.status(200).json({
+          message: "User deActivated successfully ",
+          updatedUser,
+        });
+      }
+    } catch (error) {
+      console.error(error);
+      return response.status(500).json({
+        error: "Internal Server Error",
+        message: error.message,
+      });
+    }
+  },
+  activateUserByAdmin: async (request, response) => {
+    try {
+      const { userId } = request.params;
+      // Checking if userId is provided in the request
+      if (!userId) {
+        // Respond with Bad Request (400) if 'userId' is missing
+        return response.status(400).json({ message: "UserId missing" });
+      }
+
+      let existUser = await UserModal.findById(userId);
+
+      if (!existUser) {
+        return response.status(401).json({
+          message: "User details does not exist, Please check UserId!",
+        });
+      }
+
+      // Check if the user is already deactivated
+      if (existUser.verification) {
+        return response.status(409).json({
+          message: "User is already activated",
+        });
+      }
+
+      let updatedUser = await UserModal.findByIdAndUpdate(
+        existUser._id,
+        {
+          verification: true,
+        },
+        { new: true }
+      ); // Add { new: true }
+
+      if (updatedUser) {
+        return response.status(200).json({
+          message: "User Activated successfully ",
+          updatedUser,
+        });
+      }
+    } catch (error) {
+      console.error(error);
+      return response.status(500).json({
+        error: "Internal Server Error",
+        message: error.message,
+      });
+    }
+  },
+  activateUserByUser: async (request, response) => {
+    try {
+      const { userId } = request.params;
+      // Checking if userId is provided in the request
+      if (!userId) {
+        // Respond with Bad Request (400) if 'userId' is missing
+        return response.status(400).json({ message: "UserId missing" });
+      }
+
+      let existUser = await UserModal.findById(userId);
+
+      if (!existUser) {
+        return response.status(401).json({
+          message: "User details does not exist, Please check UserId!",
+        });
+      }
+
+      // Check if the user is already deactivated
+      if (existUser.verification) {
+        return response.status(409).json({
+          message: "User is already activated",
+        });
+      }
+
+      let updatedUser = await UserModal.findByIdAndUpdate(
+        existUser._id,
+        {
+          verification: true,
+        },
+        { new: true }
+      ); // Add { new: true }
+
+      if (updatedUser) {
+        return response.status(200).json({
+          message: "User Activated successfully ",
+          updatedUser,
+        });
+      }
+    } catch (error) {
+      console.error(error);
+      return response.status(500).json({
+        error: "Internal Server Error",
+        message: error.message,
+      });
+    }
+  },
+  changePassword: async (request, response) => {
+    try {
+      const { currentPassword, newPassword, confirmNewPassword } = request.body;
+      const { userId } = request.params;
+
+      if (!currentPassword || !newPassword || !confirmNewPassword || !userId) {
+        return response.status(400).json({
+          message:
+            "Missing password and confirm password and userId fields and currentPassword",
+        });
+      }
+
+      let userById = await UserModal.findById(userId);
+      if (!userById) {
+        // Respond with Unauthorized (401) if user not found
+        return response
+          .status(401)
+          .json({ message: "user does not exist, Please check userId!" });
+      }
+
+      // Compare the entered password with the hashed password using bcrypt
+      const isAuthenticated = await bcrypt.compare(
+        currentPassword,
+        userById.passwordHash
+      );
+
+      // If the password is incorrect, return a 401 Unauthorized status code and an error message
+      if (!isAuthenticated) {
+        return response
+          .status(401)
+          .json({ message: "invalid currentPassword" });
+      }
+
+      if (newPassword !== confirmNewPassword) {
+        return response
+          .status(400)
+          .json({ message: "Password and confirm password do not match" });
+      }
+      console.log(newPassword);
+      let newPasswordHash = await bcrypt.hash(newPassword, 10);
+      console.log(newPasswordHash);
+      userById.passwordHash = newPasswordHash;
+      userById.verificationToken = "";
+      userById.verification = true;
+      let updatedUser = await userById.save();
+      if (updatedUser) {
+        return response.status(200).json({
+          message: "Password succesfully changed!",
+        });
       }
     } catch (error) {
       console.error(error);

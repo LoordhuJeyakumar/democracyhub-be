@@ -17,6 +17,12 @@ usersRouter.get(
   authMiddleware.verifyAccesToken,
   usersController.retrieveUser
 );
+
+usersRouter.post(
+  "/changePassword/:userId",
+  authMiddleware.verifyAccesToken,
+  usersController.changePassword
+);
 usersRouter.get(
   "/verify/:userId/:verifyToken",
 
@@ -43,6 +49,33 @@ usersRouter.delete(
   "/:userId",
   adminAuthMiddleware,
   usersController.deleteUserByAdmin
+);
+
+usersRouter.delete(
+  "/delete/:userId",
+  authMiddleware.verifyAccesToken,
+  usersController.deleteUserByUser
+);
+
+usersRouter.put(
+  "/deactivate/:userId",
+  adminAuthMiddleware,
+  usersController.deActivateUserByAdmin
+);
+usersRouter.put(
+  "/deactivate/user/:userId",
+  authMiddleware.verifyAccesToken,
+  usersController.deActivateUserByUser
+);
+usersRouter.put(
+  "/activate/:userId",
+  adminAuthMiddleware,
+  usersController.activateUserByAdmin
+);
+usersRouter.put(
+  "/activate/user/:userId",
+  adminAuthMiddleware,
+  usersController.activateUserByUser
 );
 
 module.exports = usersRouter;
