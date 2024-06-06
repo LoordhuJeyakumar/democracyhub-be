@@ -35,31 +35,26 @@ const electionSchema = new mongoose.Schema(
       ],
       required: [true, "Election type is required"],
     },
+
     phases: [
       {
         phaseNumber: {
           type: Number,
-          required: [true, "Phase number is required"],
+          default: null,
         },
         date: {
           type: Date,
-          required: [true, "Phase date is required"],
+          default: null,
         },
         states: {
           type: [String],
-          required: [true, "States are required"],
-          validate: {
-            validator: function (array) {
-              return array.length > 0;
-            },
-            message: "There must be at least one state",
-          },
+          default: [],
         },
         constituencies: [
           {
             type: mongoose.Schema.Types.ObjectId,
             ref: "Constituency",
-            required: [true, "Constituency is required"],
+            default: null,
           },
         ],
       },
@@ -67,11 +62,11 @@ const electionSchema = new mongoose.Schema(
     notificationDetails: {
       issueDate: {
         type: Date,
-        required: [true, "Issue date is required"],
+        default: null,
       },
       lastDateForNominations: {
         type: Date,
-        required: [true, "Last date for nominations is required"],
+        default: null,
       },
     },
     results: [
@@ -83,7 +78,6 @@ const electionSchema = new mongoose.Schema(
         },
         votesReceived: {
           type: Number,
-          required: [true, "Votes received is required"],
           default: 0,
           min: [0, "Votes received cannot be negative"],
         },
@@ -97,27 +91,13 @@ const electionSchema = new mongoose.Schema(
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Candidate",
-        required: [true, "Winner is required"],
+        default: null,
       },
     ],
     manifestos: [
       {
-        party: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "Party",
-          default: null,
-        },
-        manifestoURL: {
-          type: String,
-          trim: true,
-          default: "",
-          validate: {
-            validator: function (v) {
-              return /^https?:\/\/\S+$/.test(v);
-            },
-            message: (props) => `${props.value} is not a valid URL!`,
-          },
-        },
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Manifesto",
       },
     ],
   },

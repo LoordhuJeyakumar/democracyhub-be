@@ -1,4 +1,5 @@
 const { authMiddleware } = require("../middlewares/authMiddleware");
+const candidateRouter = require("./candidateRouter");
 const commentRouter = require("./commentRouter");
 const constituencyRouter = require("./constituencyRouter");
 const electionRouter = require("./electionRouter");
@@ -14,10 +15,8 @@ appRouter.use("/elections", electionRouter);
 appRouter.use("/parties", partiesRouter);
 appRouter.use("/manifestos", manifestoRouter);
 appRouter.use("/localIssues", localIssueRouter);
-appRouter.use(
-  "/localIssues/comments",
-  commentRouter
-);
+appRouter.use("/localIssues/comments", commentRouter);
 appRouter.use("/constituencies", constituencyRouter);
+appRouter.use("/candidates", candidateRouter);
 
 module.exports = appRouter;
