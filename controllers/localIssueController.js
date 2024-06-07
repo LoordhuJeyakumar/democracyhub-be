@@ -239,7 +239,7 @@ const localIssueController = {
       let updateIssue = await existIssue.save();
       if (updateIssue) {
         return response.status(200).json({
-          message: "Issue Upvoted successfully ",
+          message: "Issue Upvoted successfully",
           updateIssue,
         });
       }
@@ -293,7 +293,7 @@ const localIssueController = {
         let updateIssue = await existIssue.save();
         if (updateIssue) {
           return response.status(200).json({
-            message: "Upvote removed successfully",
+            message: "Downvote removed successfully",
             updateIssue,
           });
         }
@@ -315,7 +315,7 @@ const localIssueController = {
       let updateIssue = await existIssue.save();
       if (updateIssue) {
         return response.status(200).json({
-          message: "Issue DownVote successfully ",
+          message: "Issue DownVote successfully",
           updateIssue,
         });
       }
