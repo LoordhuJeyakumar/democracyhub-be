@@ -1,14 +1,13 @@
 const AWS = require("aws-sdk");
 const envProcess = require("./config");
 
-const s3 = new AWS.S3();
-
-AWS.config.update({
+const s3 = new AWS.S3({
   accessKeyId: envProcess.AWS_ACCESS_KEY,
   secretAccessKey: envProcess.AWS_SECRET_KEY,
   region: envProcess.AWS_REGION,
 });
 
+console.log(s3);
 const uploadFile = (file) => {
   const params = {
     Bucket: envProcess.AWS_S3_BUCKET,
