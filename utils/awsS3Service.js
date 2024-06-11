@@ -3,12 +3,17 @@ const envProcess = require("./config");
 
 const s3 = new AWS.S3();
 
+AWS.config.update({
+  accessKeyId: envProcess.AWS_ACCESS_KEY,
+  secretAccessKey: envProcess.AWS_SECRET_KEY,
+  region: envProcess.AWS_REGION,
+});
+
 const uploadFile = (file) => {
   const params = {
-    Bucket: envProcess.AWS_S3_BUCKET, // replace with your bucket name
-    Key: `localIssues/${Date.now()}_${file.originalname}`, // file name you want to save as in S3
+    Bucket: envProcess.AWS_S3_BUCKET,
+    Key: `localIssues/${Date.now()}_${file.originalname}`,
     Body: file.buffer,
-    /* ACL: "public-read", // permissions for the file */
   };
 
   return s3.upload(params).promise();
