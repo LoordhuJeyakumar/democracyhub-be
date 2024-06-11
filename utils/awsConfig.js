@@ -1,4 +1,4 @@
-const AWS = require("aws-sdk");
+/* const AWS = require("aws-sdk");
 const envProcess = require("./config");
 
 // Configure AWS credentials
@@ -28,3 +28,4 @@ const multerS3Config = multerS3({
 });
 
 module.exports = multerS3Config;
+ */
